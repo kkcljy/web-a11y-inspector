@@ -3,22 +3,17 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>API · A11Y Lens</title>
+  <title>API · A11Y Inspector</title>
+  <link rel="icon" href="./assets/images/brand/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./assets/css/common/layout.css?v=20260806-1">
+  <link rel="stylesheet" href="./assets/css/common/header.css?v=20260806-2">
+  <link rel="stylesheet" href="./assets/css/common/footer.css?v=20260806-1">
   <link rel="stylesheet" href="./assets/css/style.css">
 </head>
-<body>
-  <main class="a11y-app lens-subpage">
-    <header class="lens-appbar">
-      <a class="lens-brand" href="./index.html">
-        <span class="lens-brand__mark" aria-hidden="true"><span></span></span>
-        <span class="lens-brand__name">A11Y Lens</span>
-      </a>
-      <nav class="lens-subnav" aria-label="API 메뉴">
-        <a href="./index.html">검사 홈</a>
-        <a href="./guide.html">접근성 가이드</a>
-        <a class="is-active" href="./api.html" aria-current="page">API</a>
-      </nav>
-    </header>
+<body data-page="api">
+  <div data-include="./assets/includes/skip-navigation.html"></div>
+  <main id="main-content" class="a11y-app lens-subpage">
+    <div data-include="./assets/includes/header.html"></div>
 
     <section class="lens-subpage-hero lens-subpage-hero--dark">
       <span class="lens-eyebrow">Developer workspace</span>
@@ -38,6 +33,10 @@
         <div><dt>분석</dt><dd>Compare · Dashboard</dd></div>
       </dl>
     </section>
+    <div data-include="./assets/includes/footer.html"></div>
   </main>
+  <div class="a11y-toast-root" aria-live="polite" aria-atomic="true" data-a11y-toast-root></div>
+  <script type="module" src="./assets/js/common/include.js?v=20260806-1"></script>
+  <script type="module" src="./assets/js/common/navigation.js?v=20260806-1"></script>
 </body>
 </html>

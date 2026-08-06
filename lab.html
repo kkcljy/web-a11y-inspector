@@ -3,22 +3,17 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Test Lab · A11Y Lens</title>
+  <title>Test Lab · A11Y Inspector</title>
+  <link rel="icon" href="./assets/images/brand/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./assets/css/common/layout.css?v=20260806-1">
+  <link rel="stylesheet" href="./assets/css/common/header.css?v=20260806-2">
+  <link rel="stylesheet" href="./assets/css/common/footer.css?v=20260806-1">
   <link rel="stylesheet" href="./assets/css/style.css">
 </head>
-<body>
-  <main class="a11y-app lens-subpage">
-    <header class="lens-appbar">
-      <a class="lens-brand" href="./index.html">
-        <span class="lens-brand__mark" aria-hidden="true"><span></span></span>
-        <span class="lens-brand__name">A11Y Lens</span>
-      </a>
-      <nav class="lens-subnav" aria-label="Test Lab 메뉴">
-        <a href="./index.html">검사 홈</a>
-        <a href="./guide.html">접근성 가이드</a>
-        <a class="is-active" href="./lab.html" aria-current="page">Test Lab</a>
-      </nav>
-    </header>
+<body data-page="lab">
+  <div data-include="./assets/includes/skip-navigation.html"></div>
+  <main id="main-content" class="a11y-app lens-subpage">
+    <div data-include="./assets/includes/header.html"></div>
 
     <section class="lens-subpage-hero">
       <span class="lens-eyebrow">Internal testing workspace</span>
@@ -32,7 +27,7 @@
           <span class="lens-section__index">09</span>
           <h2 id="lens-lab-title">검사 시나리오</h2>
         </div>
-        <p>샘플 원본을 보거나 A11Y Lens에서 바로 검사합니다.</p>
+        <p>샘플 원본을 보거나 A11Y Inspector에서 바로 검사합니다.</p>
       </header>
 
       <div class="lens-lab-grid">
@@ -83,6 +78,10 @@
         </article>
       </div>
     </section>
+    <div data-include="./assets/includes/footer.html"></div>
   </main>
+  <div class="a11y-toast-root" aria-live="polite" aria-atomic="true" data-a11y-toast-root></div>
+  <script type="module" src="./assets/js/common/include.js?v=20260806-1"></script>
+  <script type="module" src="./assets/js/common/navigation.js?v=20260806-1"></script>
 </body>
 </html>

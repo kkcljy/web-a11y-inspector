@@ -3,24 +3,23 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>A11Y Lens</title>
-  <link rel="stylesheet" href="./assets/css/style.css?v=20260730-8">
+  <title>A11Y Inspector · 웹 접근성 검사 및 자동화 도구</title>
+  <link rel="icon" href="./assets/images/brand/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./assets/css/common/layout.css?v=20260806-1">
+  <link rel="stylesheet" href="./assets/css/common/header.css?v=20260806-2">
+  <link rel="stylesheet" href="./assets/css/common/footer.css?v=20260806-1">
+  <link rel="stylesheet" href="./assets/css/style.css?v=20260806-2">
 </head>
-<body class="lens-home-page">
-  <main class="a11y-app" data-a11y-app>
-    <header class="lens-appbar">
-      <button type="button" class="lens-brand" data-a11y-brand-home aria-label="A11Y Lens 홈">
-        <span class="lens-brand__mark" aria-hidden="true"><span></span></span>
-        <span class="lens-brand__name">A11Y Lens</span>
-      </button>
-      <a class="lens-guide-link" href="./guide.html">접근성 가이드</a>
-    </header>
+<body class="lens-home-page" data-page="home">
+  <div data-include="./assets/includes/skip-navigation.html"></div>
+  <main id="main-content" class="a11y-app" data-a11y-app>
+    <div data-include="./assets/includes/header.html"></div>
 
     <div class="lens-home" data-a11y-home>
       <section class="lens-launch" id="a11y-scan">
         <div class="lens-launch__intro">
           <span class="lens-eyebrow">Accessibility workspace</span>
-          <h1>A11Y Lens</h1>
+          <h1>A11Y Inspector</h1>
           <p>웹페이지를 직접 열고, 현재 DOM에서 수정해야 할 접근성 문제를 확인합니다.</p>
         </div>
 
@@ -66,14 +65,7 @@
         </div>
       </section>
 
-      <footer class="lens-footer">
-        <span>A11Y Lens</span>
-        <nav aria-label="보조 메뉴">
-          <a href="./guide.html">접근성 가이드</a>
-          <a href="./api.html">API</a>
-          <span>Inspection engine: axe-core</span>
-        </nav>
-      </footer>
+      <div data-include="./assets/includes/footer.html"></div>
     </div>
 
     <section class="a11y-inspector" data-a11y-inspector hidden>
@@ -134,7 +126,10 @@
       </div>
     </section>
   </main>
+  <div class="a11y-toast-root" aria-live="polite" aria-atomic="true" data-a11y-toast-root></div>
 
-  <script type="module" src="./assets/js/app.js?v=20260730-8"></script>
+  <script type="module" src="./assets/js/common/include.js?v=20260806-1"></script>
+  <script type="module" src="./assets/js/common/navigation.js?v=20260806-1"></script>
+  <script type="module" src="./assets/js/app.js?v=20260806-1"></script>
 </body>
 </html>

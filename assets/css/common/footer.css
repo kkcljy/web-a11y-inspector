@@ -1,0 +1,32 @@
+.lens-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 28px max(24px, calc((100vw - 1180px) / 2)) 34px;
+  color: #56616b;
+  font-size: 12px;
+}
+
+.lens-footer nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+.lens-footer a {
+  color: #68737d;
+  text-decoration: none;
+}
+
+.lens-footer a:hover {
+  color: #245f8c;
+}
+
+@media (max-width: 720px) {
+  .lens-footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+}
