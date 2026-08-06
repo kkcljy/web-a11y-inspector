@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>데이터 콘텐츠 접근성 테스트 샘플</title>
+  <link rel="stylesheet" href="./assets/css/sample.css">
+</head>
+<body>
+  <header class="sample-header">
+    <h1>표와 반복 콘텐츠</h1>
+    <p>데이터 표의 헤더 관계, 목록 구조, 반복 링크 이름과 빈 제목을 확인합니다.</p>
+  </header>
+
+  <main class="sample-main">
+    <div class="sample-grid">
+      <section class="sample-card sample-card--danger sample-card--wide">
+        <h2>헤더가 없는 데이터 표</h2>
+        <table class="sample-table">
+          <tr><td>1월</td><td>신규 검사</td><td>24건</td></tr>
+          <tr><td>2월</td><td>재검사</td><td>31건</td></tr>
+          <tr><td>3월</td><td>자동 검사</td><td>42건</td></tr>
+        </table>
+      </section>
+
+      <section class="sample-card sample-card--danger">
+        <h2>의미 없는 반복 링크</h2>
+        <ul class="sample-list">
+          <li>회원가입 개선안 <a href="#member">자세히</a></li>
+          <li>결제 화면 개선안 <a href="#payment">자세히</a></li>
+          <li>검색 화면 개선안 <a href="#search">자세히</a></li>
+        </ul>
+      </section>
+
+      <section class="sample-card sample-card--danger">
+        <h2>잘못 구성된 목록</h2>
+        <ul class="sample-list">
+          <div>첫 번째 작업</div>
+          <div>두 번째 작업</div>
+          <li>세 번째 작업</li>
+        </ul>
+      </section>
+
+      <section class="sample-card sample-card--danger">
+        <h2></h2>
+        <p>이 카드의 제목 요소는 비어 있습니다.</p>
+        <button class="sample-icon-button" type="button"></button>
+      </section>
+
+      <section class="sample-card sample-card--pass">
+        <h2>구분 가능한 링크</h2>
+        <ul class="sample-list">
+          <li><a href="#member-pass">회원가입 개선안 자세히</a></li>
+          <li><a href="#payment-pass">결제 화면 개선안 자세히</a></li>
+        </ul>
+      </section>
+
+      <section class="sample-card sample-card--pass sample-card--wide">
+        <h2>정상 데이터 표</h2>
+        <table class="sample-table">
+          <caption>월별 접근성 검사 현황</caption>
+          <thead><tr><th scope="col">월</th><th scope="col">검사 유형</th><th scope="col">건수</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">1월</th><td>신규 검사</td><td>24건</td></tr>
+            <tr><th scope="row">2월</th><td>재검사</td><td>31건</td></tr>
+          </tbody>
+        </table>
+      </section>
+    </div>
+  </main>
+</body>
+</html>

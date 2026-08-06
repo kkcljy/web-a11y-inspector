@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>문서 구조 접근성 테스트 샘플</title>
+  <link rel="stylesheet" href="./assets/css/sample.css">
+</head>
+<body>
+  <header class="sample-header">
+    <p class="sample-kicker">대표 제목이 없는 페이지</p>
+    <p>h1, 제목 단계, main 랜드마크, 이름 없는 중복 nav를 확인하는 의도적 오류 페이지입니다.</p>
+  </header>
+
+  <nav class="sample-nav">
+    <a href="#account">계정</a>
+    <a href="#payment">결제</a>
+  </nav>
+
+  <nav class="sample-nav">
+    <a href="#notice">공지</a>
+    <a href="#support">고객센터</a>
+  </nav>
+
+  <div class="sample-main">
+    <section class="sample-card sample-card--danger">
+      <h2 id="account">계정 설정</h2>
+      <p>핵심 콘텐츠이지만 main 랜드마크가 없습니다.</p>
+      <h4>보안 설정</h4>
+      <p>h2 다음에 h4가 나와 제목 단계를 건너뜁니다.</p>
+      <h6>로그인 기록</h6>
+    </section>
+
+    <section class="sample-card sample-card--danger">
+      <h2 id="payment">결제 설정</h2>
+      <p id="reused-description">첫 번째 설명입니다.</p>
+      <p id="reused-description">같은 id를 사용한 두 번째 설명입니다.</p>
+      <button type="button" aria-describedby="reused-description">결제 정보 변경</button>
+    </section>
+  </div>
+
+  <footer>
+    <p>랜드마크 구분과 페이지 구조 테스트용 바닥글</p>
+  </footer>
+</body>
+</html>

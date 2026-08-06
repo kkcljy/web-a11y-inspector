@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>A11Y Lens</title>
+  <link rel="stylesheet" href="./assets/css/style.css?v=20260730-8">
+</head>
+<body class="lens-home-page">
+  <main class="a11y-app" data-a11y-app>
+    <header class="lens-appbar">
+      <button type="button" class="lens-brand" data-a11y-brand-home aria-label="A11Y Lens 홈">
+        <span class="lens-brand__mark" aria-hidden="true"><span></span></span>
+        <span class="lens-brand__name">A11Y Lens</span>
+      </button>
+      <a class="lens-guide-link" href="./guide.html">접근성 가이드</a>
+    </header>
+
+    <div class="lens-home" data-a11y-home>
+      <section class="lens-launch" id="a11y-scan">
+        <div class="lens-launch__intro">
+          <span class="lens-eyebrow">Accessibility workspace</span>
+          <h1>A11Y Lens</h1>
+          <p>웹페이지를 직접 열고, 현재 DOM에서 수정해야 할 접근성 문제를 확인합니다.</p>
+        </div>
+
+        <form class="lens-scan-form" data-a11y-url-form>
+          <label for="a11y-url">검사할 화면 주소</label>
+          <div class="lens-address">
+            <span class="lens-address__icon" aria-hidden="true"></span>
+            <input id="a11y-url" type="text" placeholder="https://example.com 또는 ./samples/mixed.html" autocomplete="off" data-a11y-url>
+            <button type="submit" class="lens-scan-submit">
+              <span>검사 시작</span>
+            </button>
+          </div>
+          <p class="a11y-origin-note"><span aria-hidden="true">i</span> 현재 검사기와 같은 출처의 화면을 검사할 수 있습니다.</p>
+        </form>
+
+        <div class="lens-scan-visual" aria-hidden="true">
+          <div class="lens-scan-visual__browser">
+            <div class="lens-scan-visual__chrome"><i></i><i></i><i></i><span></span></div>
+            <div class="lens-scan-visual__page">
+              <span></span><span></span><span></span><span></span>
+              <div class="lens-scan-visual__focus"></div>
+            </div>
+          </div>
+          <div class="lens-scan-visual__status">
+            <span></span>
+            <strong>Ready to inspect</strong>
+          </div>
+        </div>
+      </section>
+
+      <section class="lens-section lens-history" id="a11y-history" aria-labelledby="a11y-history-title">
+        <header class="lens-section__header">
+          <div>
+            <h2 id="a11y-history-title">최근 검사</h2>
+          </div>
+          <p>이 브라우저에서 실행한 검사를 이어서 확인합니다.</p>
+        </header>
+        <div class="lens-history__list" data-a11y-history-list>
+          <div class="lens-history-empty">
+            <strong>아직 저장된 검사가 없습니다</strong>
+            <p>첫 검사를 실행하면 URL과 주요 결과가 이곳에 기록됩니다.</p>
+          </div>
+        </div>
+      </section>
+
+      <footer class="lens-footer">
+        <span>A11Y Lens</span>
+        <nav aria-label="보조 메뉴">
+          <a href="./guide.html">접근성 가이드</a>
+          <a href="./api.html">API</a>
+          <span>Inspection engine: axe-core</span>
+        </nav>
+      </footer>
+    </div>
+
+    <section class="a11y-inspector" data-a11y-inspector hidden>
+      <header class="a11y-toolbar">
+        <div class="a11y-toolbar__target">
+          <span class="a11y-toolbar__state"><i aria-hidden="true"></i> 검사 화면</span>
+          <strong data-a11y-address>-</strong>
+        </div>
+        <div class="a11y-toolbar__actions">
+          <div class="lens-device-switch lens-device-switch--toolbar" role="group" aria-label="검사 화면 기기">
+            <button type="button" class="is-active" data-a11y-viewport="pc" aria-pressed="true" title="PC">
+              <span class="lens-device-icon lens-device-icon--desktop" aria-hidden="true"></span>
+              <span class="sr-only">PC 화면</span>
+            </button>
+            <button type="button" data-a11y-viewport="mobile" aria-pressed="false" title="Mobile">
+              <span class="lens-device-icon lens-device-icon--mobile" aria-hidden="true"></span>
+              <span class="sr-only">Mobile 화면</span>
+            </button>
+          </div>
+          <button type="button" class="a11y-toolbar__run" data-a11y-run disabled>
+            <span class="a11y-run-icon" aria-hidden="true"></span>
+            <span data-a11y-run-label>현재 화면 검사</span>
+          </button>
+          <button type="button" class="a11y-toolbar__result" aria-controls="a11y-result-drawer" aria-expanded="false" data-a11y-result-toggle>
+            <span class="a11y-result-icon" aria-hidden="true"></span>
+            <span>검사 결과</span>
+            <span class="a11y-toolbar__count" data-a11y-result-count hidden>0</span>
+          </button>
+          <button type="button" class="a11y-inspector-close" aria-label="접근성 검사 종료" title="검사 종료" data-a11y-close>검사 종료</button>
+        </div>
+      </header>
+
+      <div class="a11y-workspace">
+        <div class="a11y-frame-shell" data-viewport="pc" data-a11y-frame-wrap>
+          <div class="a11y-loading" data-a11y-loading>
+            <span aria-hidden="true"></span>
+            <p>화면을 불러오고 있습니다.</p>
+          </div>
+          <iframe class="a11y-frame" title="접근성 검사 대상 화면" src="about:blank" data-a11y-frame></iframe>
+        </div>
+
+        <aside id="a11y-result-drawer" class="a11y-drawer" aria-label="접근성 검사 결과" aria-hidden="true" data-a11y-result-drawer hidden>
+          <header class="a11y-drawer__header">
+            <div>
+              <strong>접근성 검사 결과</strong>
+              <p>현재 화면에서 수정하거나 확인할 항목입니다.</p>
+            </div>
+            <button type="button" class="a11y-icon-button a11y-icon-button--close" aria-label="검사 결과 닫기" title="검사 결과 닫기" data-a11y-result-close><span aria-hidden="true">×</span></button>
+          </header>
+          <div class="a11y-drawer__body">
+            <section class="a11y-summary" aria-live="polite" data-a11y-summary>
+              <strong>검사 전</strong>
+              <p>화면을 불러온 뒤 현재 화면 검사를 실행하세요.</p>
+            </section>
+            <div class="a11y-results" data-a11y-results></div>
+          </div>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="./assets/js/app.js?v=20260730-8"></script>
+</body>
+</html>

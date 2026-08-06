@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>API · A11Y Lens</title>
+  <link rel="stylesheet" href="./assets/css/style.css">
+</head>
+<body>
+  <main class="a11y-app lens-subpage">
+    <header class="lens-appbar">
+      <a class="lens-brand" href="./index.html">
+        <span class="lens-brand__mark" aria-hidden="true"><span></span></span>
+        <span class="lens-brand__name">A11Y Lens</span>
+      </a>
+      <nav class="lens-subnav" aria-label="API 메뉴">
+        <a href="./index.html">검사 홈</a>
+        <a href="./guide.html">접근성 가이드</a>
+        <a class="is-active" href="./api.html" aria-current="page">API</a>
+      </nav>
+    </header>
+
+    <section class="lens-subpage-hero lens-subpage-hero--dark">
+      <span class="lens-eyebrow">Developer workspace</span>
+      <h1>Accessibility API</h1>
+      <p>페이지와 사이트 자동 검사, 결과 저장, 리포트 생성을 연결할 API 전용 공간입니다.</p>
+    </section>
+
+    <section class="lens-api-roadmap">
+      <div>
+        <span class="lens-api__state"><i aria-hidden="true"></i> 설계 준비 중</span>
+        <h2>실제 API 명세가 확정되면 이 화면에서 요청을 실행하고 응답을 확인합니다.</h2>
+      </div>
+      <dl>
+        <div><dt>검사 범위</dt><dd>URL · 페이지 · 사이트</dd></div>
+        <div><dt>자동화</dt><dd>Playwright · 예약 실행</dd></div>
+        <div><dt>출력</dt><dd>JSON · HTML · Excel</dd></div>
+        <div><dt>분석</dt><dd>Compare · Dashboard</dd></div>
+      </dl>
+    </section>
+  </main>
+</body>
+</html>

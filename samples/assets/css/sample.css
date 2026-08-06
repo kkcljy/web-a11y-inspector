@@ -1,0 +1,278 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  min-height: 100%;
+  margin: 0;
+}
+
+body {
+  color: #172033;
+  background: #f4f6f8;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  line-height: 1.55;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+a {
+  color: #1d4ed8;
+}
+
+.sample-header {
+  padding: 28px max(24px, calc((100vw - 1040px) / 2));
+  background: #14213d;
+  color: #fff;
+}
+
+.sample-header p {
+  max-width: 760px;
+  margin: 8px 0 0;
+  color: #d7e2f2;
+}
+
+.sample-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+  margin-top: 18px;
+}
+
+.sample-nav a {
+  color: #fff;
+}
+
+.sample-main {
+  width: min(1040px, calc(100% - 40px));
+  margin: 0 auto;
+  padding: 32px 0 64px;
+}
+
+.sample-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.sample-card {
+  padding: 20px;
+  border: 1px solid #dce2ea;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.sample-card h2,
+.sample-card h3 {
+  margin-top: 0;
+}
+
+.sample-card--wide {
+  grid-column: 1 / -1;
+}
+
+.sample-card--danger {
+  border-left: 5px solid #b42318;
+}
+
+.sample-card--pass {
+  border-left: 5px solid #16794b;
+}
+
+.sample-kicker {
+  margin: 0 0 6px;
+  color: #5d6678;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.sample-list {
+  margin: 12px 0 0;
+  padding-left: 20px;
+}
+
+.sample-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+.sample-form {
+  display: grid;
+  gap: 16px;
+}
+
+.sample-form label,
+.sample-form legend {
+  font-weight: 700;
+}
+
+.sample-form input,
+.sample-form select,
+.sample-form textarea {
+  width: 100%;
+  min-height: 42px;
+  padding: 8px 10px;
+  border: 1px solid #9aa4b2;
+  border-radius: 6px;
+  background: #fff;
+}
+
+.sample-form fieldset {
+  margin: 0;
+  padding: 14px;
+  border: 1px solid #dce2ea;
+  border-radius: 6px;
+}
+
+.sample-button {
+  min-height: 42px;
+  padding: 8px 14px;
+  border: 0;
+  border-radius: 6px;
+  background: #172033;
+  color: #fff;
+  font-weight: 700;
+}
+
+.sample-icon-button {
+  width: 42px;
+  min-height: 42px;
+  border: 1px solid #9aa4b2;
+  border-radius: 6px;
+  background: #fff;
+}
+
+.sample-image {
+  display: block;
+  width: 180px;
+  max-width: 100%;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+  border: 1px solid #dce2ea;
+}
+
+.sample-note {
+  padding: 14px;
+  border-left: 4px solid #2563eb;
+  background: #eff6ff;
+}
+
+.sample-code {
+  overflow: auto;
+  padding: 12px;
+  border-radius: 6px;
+  background: #101828;
+  color: #e5e7eb;
+  font: 13px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+.contrast-low {
+  padding: 18px;
+  background: #fff;
+  color: #b8b8b8;
+}
+
+.contrast-low-large {
+  padding: 18px;
+  background: #f5e9d8;
+  color: #b88958;
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.contrast-pass {
+  padding: 18px;
+  background: #fff;
+  color: #1f2937;
+}
+
+.contrast-image {
+  padding: 24px;
+  background-color: #52606d;
+  background-image: linear-gradient(90deg, rgba(255, 255, 255, 0.9), rgba(17, 24, 39, 0.2));
+  color: #737373;
+}
+
+.wide-content {
+  width: 720px;
+  padding: 16px;
+  border: 1px solid #dce2ea;
+  background: #fff;
+}
+
+.frame-demo {
+  width: 100%;
+  height: 420px;
+  border: 2px solid #64748b;
+  background: #fff;
+}
+
+.sample-dialog {
+  margin-top: 14px;
+  padding: 18px;
+  border: 1px solid #dce2ea;
+  border-radius: 6px;
+  background: #fff;
+  box-shadow: 0 14px 30px rgba(23, 32, 51, 0.16);
+}
+
+.sample-dialog p {
+  margin-top: 0;
+}
+
+.sample-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+}
+
+.sample-table caption {
+  margin-bottom: 10px;
+  color: #5d6678;
+  font-weight: 700;
+  text-align: left;
+}
+
+.sample-table th,
+.sample-table td {
+  padding: 10px 12px;
+  border: 1px solid #dce2ea;
+  text-align: left;
+}
+
+.sample-table th {
+  background: #eef2f6;
+}
+
+.visually-hidden {
+  position: absolute !important;
+  overflow: hidden !important;
+  width: 1px !important;
+  height: 1px !important;
+  margin: -1px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  clip: rect(0 0 0 0) !important;
+  clip-path: inset(50%) !important;
+  white-space: nowrap !important;
+}
+
+@media (max-width: 700px) {
+  .sample-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .sample-card--wide {
+    grid-column: auto;
+  }
+}

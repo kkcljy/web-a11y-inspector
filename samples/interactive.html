@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>상호작용 접근성 테스트 샘플</title>
+  <link rel="stylesheet" href="./assets/css/sample.css">
+</head>
+<body>
+  <header class="sample-header">
+    <h1>상호작용과 키보드</h1>
+    <p>다이얼로그 이름, 탭 상태, 포커스 순서와 동적 콘텐츠 안내를 확인합니다.</p>
+  </header>
+
+  <main class="sample-main">
+    <div class="sample-grid">
+      <section class="sample-card sample-card--danger">
+        <h2>이름 없는 다이얼로그</h2>
+        <button class="sample-button" type="button" data-open-dialog>레이어 열기</button>
+        <div class="sample-dialog" role="dialog" hidden data-dialog>
+          <p>다이얼로그 역할은 있지만 접근 가능한 이름과 포커스 이동이 없습니다.</p>
+          <button type="button" data-close-dialog>닫기</button>
+        </div>
+      </section>
+
+      <section class="sample-card sample-card--danger">
+        <h2>필수 상태가 없는 탭</h2>
+        <div role="tablist" aria-label="서비스 구분">
+          <button role="tab" type="button">개인</button>
+          <button role="tab" type="button">기업</button>
+        </div>
+        <div role="tabpanel">선택 상태와 탭 연결 정보가 없습니다.</div>
+      </section>
+
+      <section class="sample-card sample-card--danger">
+        <h2>강제된 포커스 순서</h2>
+        <div class="sample-row">
+          <button class="sample-button" type="button" tabindex="3">첫 번째로 보이는 버튼</button>
+          <button class="sample-button" type="button" tabindex="1">두 번째로 보이는 버튼</button>
+          <button class="sample-button" type="button" tabindex="2">세 번째로 보이는 버튼</button>
+        </div>
+      </section>
+
+      <section class="sample-card sample-card--danger">
+        <h2>안내되지 않는 상태 변경</h2>
+        <button class="sample-button" type="button" data-update-status>처리 시작</button>
+        <p data-status>대기 중</p>
+      </section>
+
+      <section class="sample-card sample-card--pass sample-card--wide">
+        <h2>정상 다이얼로그와 상태 안내</h2>
+        <button class="sample-button" type="button" aria-haspopup="dialog">약관 확인</button>
+        <div class="sample-note" role="status">저장 준비가 완료되었습니다.</div>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    const dialog = document.querySelector("[data-dialog]");
+    document.querySelector("[data-open-dialog]").addEventListener("click", () => {
+      dialog.hidden = false;
+    });
+    document.querySelector("[data-close-dialog]").addEventListener("click", () => {
+      dialog.hidden = true;
+    });
+    document.querySelector("[data-update-status]").addEventListener("click", () => {
+      document.querySelector("[data-status]").textContent = "처리가 완료되었습니다.";
+    });
+  </script>
+</body>
+</html>

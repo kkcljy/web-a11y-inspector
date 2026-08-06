@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Test Lab · A11Y Lens</title>
+  <link rel="stylesheet" href="./assets/css/style.css">
+</head>
+<body>
+  <main class="a11y-app lens-subpage">
+    <header class="lens-appbar">
+      <a class="lens-brand" href="./index.html">
+        <span class="lens-brand__mark" aria-hidden="true"><span></span></span>
+        <span class="lens-brand__name">A11Y Lens</span>
+      </a>
+      <nav class="lens-subnav" aria-label="Test Lab 메뉴">
+        <a href="./index.html">검사 홈</a>
+        <a href="./guide.html">접근성 가이드</a>
+        <a class="is-active" href="./lab.html" aria-current="page">Test Lab</a>
+      </nav>
+    </header>
+
+    <section class="lens-subpage-hero">
+      <span class="lens-eyebrow">Internal testing workspace</span>
+      <h1>Test Lab</h1>
+      <p>회사 페이지가 없어도 axe-core와 커스텀 규칙, viewport, iframe 검사를 바로 확인할 수 있습니다.</p>
+    </section>
+
+    <section class="lens-lab" aria-labelledby="lens-lab-title">
+      <header class="lens-section__header">
+        <div>
+          <span class="lens-section__index">09</span>
+          <h2 id="lens-lab-title">검사 시나리오</h2>
+        </div>
+        <p>샘플 원본을 보거나 A11Y Lens에서 바로 검사합니다.</p>
+      </header>
+
+      <div class="lens-lab-grid">
+        <article class="lens-lab-item">
+          <span class="lens-lab-item__number">01</span>
+          <div><strong>종합 오류</strong><p>axe 오류, 확인 필요, 커스텀 규칙을 한 화면에서 확인합니다.</p></div>
+          <div class="lens-lab-item__actions"><a href="./samples/mixed.html">원본 보기</a><a class="is-primary" href="./index.html?url=./samples/mixed.html">검사기로 열기</a></div>
+        </article>
+        <article class="lens-lab-item">
+          <span class="lens-lab-item__number">02</span>
+          <div><strong>폼과 접근 가능한 이름</strong><p>label 연결, 이름 누락, 중복 ID와 ARIA 참조를 검사합니다.</p></div>
+          <div class="lens-lab-item__actions"><a href="./samples/forms.html">원본 보기</a><a class="is-primary" href="./index.html?url=./samples/forms.html">검사기로 열기</a></div>
+        </article>
+        <article class="lens-lab-item">
+          <span class="lens-lab-item__number">03</span>
+          <div><strong>문서 구조</strong><p>제목 단계, 랜드마크, 언어와 문서 구조를 확인합니다.</p></div>
+          <div class="lens-lab-item__actions"><a href="./samples/structure.html">원본 보기</a><a class="is-primary" href="./index.html?url=./samples/structure.html">검사기로 열기</a></div>
+        </article>
+        <article class="lens-lab-item">
+          <span class="lens-lab-item__number">04</span>
+          <div><strong>색상 명도 대비</strong><p>일반 텍스트, 큰 텍스트와 배경 이미지 대비를 분석합니다.</p></div>
+          <div class="lens-lab-item__actions"><a href="./samples/contrast.html">원본 보기</a><a class="is-primary" href="./index.html?url=./samples/contrast.html">검사기로 열기</a></div>
+        </article>
+        <article class="lens-lab-item">
+          <span class="lens-lab-item__number">05</span>
+          <div><strong>모바일과 화면 확대</strong><p>확대 제한과 고정 폭 콘텐츠를 Mobile viewport에서 확인합니다.</p></div>
+          <div class="lens-lab-item__actions"><a href="./samples/mobile.html">원본 보기</a><a class="is-primary" href="./index.html?url=./samples/mobile.html&amp;viewport=mobile">Mobile로 검사</a></div>
+        </article>
+        <article class="lens-lab-item">
+          <span class="lens-lab-item__number">06</span>
+          <div><strong>동일 출처 iframe</strong><p>부모 문서와 동일 출처 프레임 내부의 검사 범위를 확인합니다.</p></div>
+          <div class="lens-lab-item__actions"><a href="./samples/frames.html">원본 보기</a><a class="is-primary" href="./index.html?url=./samples/frames.html">검사기로 열기</a></div>
+        </article>
+        <article class="lens-lab-item">
+          <span class="lens-lab-item__number">07</span>
+          <div><strong>상호작용과 키보드</strong><p>다이얼로그, 탭, 포커스 순서와 동적 콘텐츠를 점검합니다.</p></div>
+          <div class="lens-lab-item__actions"><a href="./samples/interactive.html">원본 보기</a><a class="is-primary" href="./index.html?url=./samples/interactive.html">검사기로 열기</a></div>
+        </article>
+        <article class="lens-lab-item">
+          <span class="lens-lab-item__number">08</span>
+          <div><strong>표와 반복 콘텐츠</strong><p>데이터 표, 목록 구조와 반복 링크 이름을 검사합니다.</p></div>
+          <div class="lens-lab-item__actions"><a href="./samples/data.html">원본 보기</a><a class="is-primary" href="./index.html?url=./samples/data.html">검사기로 열기</a></div>
+        </article>
+        <article class="lens-lab-item lens-lab-item--pass">
+          <span class="lens-lab-item__number">09</span>
+          <div><strong>정상 구현 통과 기준</strong><p>접근 가능한 이름, 폼, 구조가 정상인 요소를 기준으로 확인합니다.</p></div>
+          <div class="lens-lab-item__actions"><a href="./samples/pass.html">원본 보기</a><a class="is-primary" href="./index.html?url=./samples/pass.html">검사기로 열기</a></div>
+        </article>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>접근성 정상 구현 테스트 샘플</title>
+  <link rel="stylesheet" href="./assets/css/sample.css">
+</head>
+<body>
+  <header class="sample-header">
+    <h1>정상 구현 통과 기준</h1>
+    <p>시맨틱 구조, 접근 가능한 이름, 폼 연결, 이미지 대체 텍스트와 명도 대비를 갖춘 기준 페이지입니다.</p>
+    <nav class="sample-nav" aria-label="주요 메뉴">
+      <a href="#profile">프로필</a>
+      <a href="#preferences">환경 설정</a>
+    </nav>
+  </header>
+
+  <main class="sample-main">
+    <div class="sample-grid">
+      <section id="profile" class="sample-card sample-card--pass">
+        <h2>프로필 이미지</h2>
+        <img class="sample-image" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='200'%3E%3Crect width='300' height='200' fill='%232563eb'/%3E%3Ccircle cx='150' cy='78' r='38' fill='white'/%3E%3Cpath d='M75 190c10-48 42-68 75-68s65 20 75 68' fill='white'/%3E%3C/svg%3E" alt="파란색 배경의 사용자 프로필 기본 이미지">
+        <p>이미지의 의미를 설명하는 대체 텍스트가 제공됩니다.</p>
+      </section>
+
+      <section id="preferences" class="sample-card sample-card--pass">
+        <h2>환경 설정</h2>
+        <form class="sample-form">
+          <label for="display-name">표시 이름</label>
+          <input id="display-name" name="display-name" type="text" autocomplete="name">
+
+          <label for="language">알림 언어</label>
+          <select id="language" name="language">
+            <option value="ko">한국어</option>
+            <option value="en">English</option>
+          </select>
+
+          <fieldset>
+            <legend>이메일 알림</legend>
+            <label><input name="email-notice" type="radio" value="on"> 받기</label>
+            <label><input name="email-notice" type="radio" value="off"> 받지 않기</label>
+          </fieldset>
+
+          <button class="sample-button" type="submit">설정 저장</button>
+        </form>
+      </section>
+
+      <section class="sample-card sample-card--pass sample-card--wide">
+        <h2>접근 가능한 동작</h2>
+        <div class="sample-row">
+          <button class="sample-icon-button" type="button" aria-label="도움말 열기">?</button>
+          <a href="./mixed.html">종합 오류 샘플로 이동</a>
+          <p class="contrast-pass">이 텍스트는 배경과 충분한 명도 대비를 가집니다.</p>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="sample-main">
+    <p>접근성 검사 정상 기준 테스트 페이지</p>
+  </footer>
+</body>
+</html>

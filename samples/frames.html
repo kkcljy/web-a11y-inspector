@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>iframe 접근성 테스트 샘플</title>
+  <link rel="stylesheet" href="./assets/css/sample.css">
+</head>
+<body>
+  <header class="sample-header">
+    <h1>동일 출처 iframe</h1>
+    <p>부모 문서와 같은 서버의 자식 프레임을 axe가 탐색하는지 확인합니다.</p>
+  </header>
+
+  <main class="sample-main">
+    <section class="sample-card">
+      <h2>자식 프레임 검사</h2>
+      <p class="sample-note">자식 문서에는 제목, 언어, 이미지 대체 텍스트, 버튼 이름, 폼 label 오류가 의도적으로 포함되어 있습니다.</p>
+      <iframe class="frame-demo" src="./frame-child.html" title="접근성 오류가 포함된 테스트 화면"></iframe>
+    </section>
+  </main>
+</body>
+</html>
