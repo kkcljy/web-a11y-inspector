@@ -29,7 +29,7 @@ https://github.com/kkcljy/web-a11y-inspector
 /Users/chocokwak/Desktop/work/a11y
 ```
 
-브랜드명은 아직 확정하지 않았다. 기존 화면 일부에는 `A11Y Lens` 계열 표현이 남아 있을 수 있으나, 저장소명은 임시/중립적인 `web-a11y-inspector`로 정했다.
+브랜드명은 `A11Y Inspector`로 정리했다. 제품 설명은 "웹 접근성 검사 및 자동화 도구"이며, 헤더에는 기본적으로 심볼과 브랜드명만 노출한다. 저장소명은 기존 공유 흐름을 유지하기 위해 `web-a11y-inspector`를 사용한다.
 
 ## 3. 현재 파일 구조
 
@@ -155,6 +155,44 @@ a11y/
 주의:
 
 - 테스트 Lab 링크는 메인에서 연결하지 않는 방향으로 조정된 적이 있다. 파일은 유지하되, 내부 사용 시 노출 범위는 별도 판단한다.
+
+### 공통 레이아웃
+
+현재 정적 멀티 페이지 구조를 유지한다. SPA로 전환하지 않고, 반복되는 공통 영역만 include 방식으로 분리한다.
+
+공통 파일 위치:
+
+- `assets/includes/skip-navigation.html`
+- `assets/includes/header.html`
+- `assets/includes/footer.html`
+- `assets/js/common/include.js`
+- `assets/js/common/navigation.js`
+- `assets/css/common/layout.css`
+- `assets/css/common/header.css`
+- `assets/css/common/footer.css`
+
+적용 페이지:
+
+- `index.html`
+- `guide.html`
+- `lab.html`
+- `api.html`
+
+각 페이지는 `body[data-page]`로 현재 페이지를 구분한다. `navigation.js`는 `data-nav-page`와 `data-page`를 비교해 현재 메뉴에 `aria-current="page"`를 적용한다.
+
+공통 헤더 메뉴는 `화면 검사`, `접근성 가이드`, `Test Lab` 3개만 노출하며 `api.html`은 직접 URL 접근만 유지한다.
+
+공통화 범위는 건너뛰기 링크, 헤더, 주요 내비게이션, 푸터, toast root까지로 제한한다. 검사 결과 Drawer, 검사 엔진, Guide 본문, Test Lab 본문, API 본문은 공통 레이아웃에 포함하지 않는다.
+
+### SPA 전환 판단 기준
+
+현재는 정적 MPA 구조를 유지한다. React, Vue 등 프레임워크는 사용할 수 없으며 Vanilla JS만 사용한다.
+
+자동화 실행 화면, 리포트 화면, Compare 화면 중 하나를 실제 구현하기 시작하는 시점에는 기능 구현 전에 Vanilla JS SPA 전환 필요성을 먼저 검토한다. 해당 시점이 오면 바로 구현하지 말고, 기존 화면 검사·접근성 가이드·Test Lab을 포함한 얇은 Vanilla Router 도입 범위와 위험을 먼저 사용자에게 보고한다.
+
+사용자의 승인 없이 SPA 전환이나 라우터 도입을 진행하지 않는다.
+
+SPA를 도입할 경우 공통 앱 셸은 유지하고 `main` 영역만 전환한다. 페이지별 `mount/unmount`, 브라우저 뒤로 가기, 문서 제목, 포커스 이동을 함께 처리해야 한다.
 
 ## 5. 구현된 주요 기능
 
@@ -425,4 +463,3 @@ Codex가 이어서 할 일:
 5. JSON 저장/복원 구현
 6. IndexedDB 이력 구조 구현
 7. Compare/Dashboard 기반 코드 분리
-

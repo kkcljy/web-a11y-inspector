@@ -5,8 +5,10 @@ const emptyState = document.querySelector("[data-guide-empty]");
 const rules = Array.from(document.querySelectorAll(".lens-guide-rule"));
 const codeBlocks = Array.from(document.querySelectorAll(".lens-guide-code pre code"));
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-const DISCLOSURE_OPEN_MS = 420;
-const DISCLOSURE_CLOSE_MS = 280;
+let guideGroups = [];
+let selectedGuideGroup = "ui-components";
+let guideGroupButtons = [];
+let guideGroupSelect = null;
 
 const GUIDE_IDS = new Map([
   ["탭", "guide-tabs"],
@@ -43,6 +45,11 @@ const GUIDE_IDS = new Map([
   ["숨김 콘텐츠", "guide-hidden-content"],
   ["차트와 데이터 시각화", "guide-chart"],
   ["무한 스크롤과 더보기", "guide-infinite-scroll"],
+  ["오류 요약과 제출 후 포커스", "guide-form-error-summary"],
+  ["포커스 관리와 동적 화면 전환", "guide-focus-transition"],
+  ["확대·리플로우·반응형 레이아웃", "guide-reflow"],
+  ["터치 대상과 포인터 입력", "guide-touch-pointer"],
+  ["인증과 비밀번호 입력", "guide-auth-password"],
 ]);
 
 const GUIDE_BADGES = new Map([
@@ -71,7 +78,54 @@ const GUIDE_BADGES = new Map([
   ["페이지 제목과 언어", ["기본 HTML"]],
   ["차트와 데이터 시각화", ["ARIA 필요", "수동 확인 필요"]],
   ["무한 스크롤과 더보기", ["기본 HTML", "상태 알림", "키보드 필수"]],
+  ["오류 요약과 제출 후 포커스", ["기본 HTML", "ARIA 필요", "상태 알림"]],
+  ["포커스 관리와 동적 화면 전환", ["키보드 필수", "수동 확인 필요"]],
+  ["확대·리플로우·반응형 레이아웃", ["수동 확인 필요"]],
+  ["터치 대상과 포인터 입력", ["키보드 필수", "수동 확인 필요"]],
+  ["인증과 비밀번호 입력", ["기본 HTML", "ARIA 필요", "수동 확인 필요"]],
 ]);
+
+const GUIDE_GROUPS = [
+  {
+    id: "ui-components",
+    title: "UI 컴포넌트",
+    items: ["탭", "아코디언", "모달과 레이어", "버튼과 링크", "메뉴 버튼과 드롭다운", "툴팁과 도움말", "캐러셀과 슬라이드", "스위치와 토글 버튼", "전체 클릭 카드"],
+  },
+  {
+    id: "forms-inputs",
+    title: "폼 & 입력",
+    items: ["입력 항목명, 도움말과 오류", "체크박스와 라디오 그룹", "선택창과 자동완성", "날짜 입력과 달력", "파일 업로드", "개인정보 입력과 자동완성", "인증과 비밀번호 입력", "오류 요약과 제출 후 포커스"],
+  },
+  {
+    id: "keyboard-focus",
+    title: "키보드 & 포커스",
+    items: ["키보드 포커스", "포커스 관리와 동적 화면 전환", "드래그와 복잡한 제스처"],
+  },
+  {
+    id: "content-structure",
+    title: "콘텐츠 & 구조",
+    items: ["이미지 대체 텍스트", "데이터 표", "제목과 페이지 영역", "페이지네이션", "현재 위치와 브레드크럼", "iframe과 외부 콘텐츠", "본문 바로가기", "페이지 제목과 언어", "숨김 콘텐츠", "차트와 데이터 시각화", "단계형 폼과 스테퍼"],
+  },
+  {
+    id: "visual-responsive",
+    title: "시각 & 반응형",
+    items: ["글자와 UI 명도 대비", "확대·리플로우·반응형 레이아웃", "터치 대상과 포인터 입력", "움직임과 시간 제한"],
+  },
+  {
+    id: "state-dynamic",
+    title: "상태 & 동적 UI",
+    items: ["상태 메시지와 알림", "로딩과 진행률", "무한 스크롤과 더보기"],
+  },
+  {
+    id: "media",
+    title: "미디어",
+    items: ["동영상과 음성"],
+  },
+];
+
+const GUIDE_GROUP_BY_TITLE = new Map(
+  GUIDE_GROUPS.flatMap((group) => group.items.map((title) => [title, group.id])),
+);
 
 const escapeCode = (value) =>
   value
@@ -175,14 +229,104 @@ const enhanceCodeBlocks = () => {
 };
 
 function getGuideTitle(rule) {
-  return rule.querySelector("summary strong")?.textContent.trim() || "";
+  return rule.querySelector(".lens-guide-rule__trigger strong")?.textContent.trim() || "";
+}
+
+function setupGuideGroups() {
+  const container = document.querySelector("[data-guide-rules]");
+  if (!container) return;
+
+  const groups = new Map();
+  const fragment = document.createDocumentFragment();
+
+  GUIDE_GROUPS.forEach(({ id, title }) => {
+    const group = document.createElement("section");
+    const heading = document.createElement("h3");
+    const items = document.createElement("div");
+    group.className = "lens-guide-category";
+    group.dataset.guideGroup = id;
+    heading.className = "lens-guide-category__title";
+    heading.id = `guide-category-${id}`;
+    heading.textContent = title;
+    items.className = "lens-guide-category__items";
+    group.setAttribute("aria-labelledby", heading.id);
+    group.append(heading, items);
+    groups.set(id, items);
+    fragment.append(group);
+  });
+
+  rules.forEach((rule) => {
+    const groupId = GUIDE_GROUP_BY_TITLE.get(getGuideTitle(rule)) || "content-structure";
+    rule.dataset.guideGroup = groupId;
+    groups.get(groupId)?.append(rule);
+  });
+
+  container.replaceChildren(fragment);
+  guideGroups = Array.from(container.querySelectorAll(".lens-guide-category"));
+  setupGuideGroupControls(container);
+}
+
+function setupGuideGroupControls(container) {
+  const navigation = document.createElement("nav");
+  const list = document.createElement("ul");
+  navigation.className = "lens-guide-category-nav";
+  navigation.setAttribute("aria-label", "접근성 패턴 카테고리");
+  list.className = "lens-guide-category-nav__list";
+
+  GUIDE_GROUPS.forEach(({ id, title }) => {
+    const item = document.createElement("li");
+    const button = document.createElement("button");
+    item.className = "lens-guide-category-nav__item";
+    button.className = "lens-guide-category-nav__button";
+    button.type = "button";
+    button.textContent = title;
+    button.dataset.guideGroup = id;
+    button.setAttribute("aria-pressed", String(id === selectedGuideGroup));
+    button.addEventListener("click", () => selectGuideGroup(id));
+    item.append(button);
+    list.append(item);
+  });
+
+  const mobileLabel = document.createElement("label");
+  mobileLabel.className = "lens-guide-category-select";
+  mobileLabel.innerHTML = '<span>패턴 카테고리</span>';
+  guideGroupSelect = document.createElement("select");
+  guideGroupSelect.setAttribute("aria-label", "패턴 카테고리");
+  GUIDE_GROUPS.forEach(({ id, title }) => {
+    const option = new Option(title, id, false, id === selectedGuideGroup);
+    guideGroupSelect.append(option);
+  });
+  guideGroupSelect.addEventListener("change", () => selectGuideGroup(guideGroupSelect.value));
+  mobileLabel.append(guideGroupSelect);
+
+  navigation.append(list);
+  container.before(navigation, mobileLabel);
+  guideGroupButtons = Array.from(navigation.querySelectorAll("button"));
+}
+
+function selectGuideGroup(groupId) {
+  if (!GUIDE_GROUP_BY_TITLE.size || !GUIDE_GROUPS.some(({ id }) => id === groupId)) return;
+  selectedGuideGroup = groupId;
+  guideGroupButtons.forEach((button) => {
+    button.setAttribute("aria-pressed", String(button.dataset.guideGroup === groupId));
+  });
+  if (guideGroupSelect) guideGroupSelect.value = groupId;
+  applyFilters();
+}
+
+function updateGuideGroups() {
+  guideGroups.forEach((group) => {
+    const hasVisibleRule = group.querySelector(".lens-guide-rule:not([hidden])");
+    const searching = Boolean(searchInput?.value.trim());
+    group.hidden = !hasVisibleRule || (!searching && group.dataset.guideGroup !== selectedGuideGroup);
+  });
 }
 
 function setupGuideMetadata() {
   rules.forEach((rule, index) => {
     const title = getGuideTitle(rule);
-    const summary = rule.querySelector("summary");
-    const body = rule.querySelector(".lens-guide-rule__body");
+    const trigger = rule.querySelector(".lens-guide-rule__trigger");
+    const panel = rule.querySelector(".lens-guide-rule__body");
     const id = rule.id || GUIDE_IDS.get(title) || `guide-pattern-${index + 1}`;
     const panelId = `${id}-panel`;
 
@@ -190,18 +334,18 @@ function setupGuideMetadata() {
     rule.dataset.guideTitle = title;
     rule.dataset.guideIndex = String(index + 1);
 
-    if (summary && body) {
-      ensurePanelInner(body);
-      summary.id = `${id}-summary`;
-      summary.setAttribute("aria-controls", panelId);
-      summary.setAttribute("aria-expanded", String(rule.open));
-      body.id = panelId;
-      body.setAttribute("role", "region");
-      body.setAttribute("aria-labelledby", summary.id);
-      setPanelInert(body, !rule.open);
+    if (trigger && panel) {
+      ensurePanelInner(panel);
+      trigger.id = `${id}-trigger`;
+      trigger.setAttribute("aria-controls", panelId);
+      trigger.setAttribute("aria-expanded", "false");
+      panel.id = panelId;
+      panel.setAttribute("role", "region");
+      panel.setAttribute("aria-labelledby", trigger.id);
+      syncDisclosureState(rule, panel, false);
     }
 
-    renderBadges(summary, GUIDE_BADGES.get(title));
+    renderBadges(trigger, GUIDE_BADGES.get(title));
   });
 }
 
@@ -230,148 +374,27 @@ function renderBadges(summary, badges = []) {
 
 function setupAccordions() {
   rules.forEach((rule) => {
-    const summary = rule.querySelector("summary");
-    const body = rule.querySelector(".lens-guide-rule__body");
-    if (!summary || !body) return;
-    syncDisclosureState(rule, body);
-    const handleToggleRequest = (event) => {
-      event.preventDefault();
-      event.stopPropagation();
-      toggleRule(rule);
-    };
-    const preventNativeToggle = (event) => {
-      event.preventDefault();
-    };
-    summary.addEventListener("pointerdown", preventNativeToggle, true);
-    summary.addEventListener("mousedown", preventNativeToggle, true);
-    summary.addEventListener("click", handleToggleRequest, true);
-    summary.addEventListener("keydown", (event) => {
-      if (event.key !== "Enter" && event.key !== " ") return;
-      handleToggleRequest(event);
-    });
-    rule.addEventListener("toggle", () => {
-      if (rule._guideIgnoreToggle) {
-        rule._guideIgnoreToggle = false;
-        return;
-      }
-      const isExpanded = summary.getAttribute("aria-expanded") === "true";
-      if (rule.classList.contains("is-animating")) {
-        if (!rule.open) rule.open = true;
-        return;
-      }
-      if (!rule.open && !isExpanded) {
-        rule.open = true;
-        collapseRule(rule, body);
-        return;
-      }
-      if (rule.open !== isExpanded) rule.open = isExpanded;
-    });
+    const trigger = rule.querySelector(".lens-guide-rule__trigger");
+    const panel = rule.querySelector(".lens-guide-rule__body");
+    if (!trigger || !panel) return;
+    trigger.addEventListener("click", () => toggleRule(rule));
   });
 }
 
 function toggleRule(rule, forceOpen = null) {
   if (rule.hidden) rule.hidden = false;
-  const body = rule.querySelector(".lens-guide-rule__body");
-  if (!body) return;
-  const summary = rule.querySelector("summary");
-  const isExpanded = summary?.getAttribute("aria-expanded") === "true";
-  const shouldOpen = forceOpen ?? !isExpanded;
-  if (shouldOpen === isExpanded && !rule.classList.contains("is-animating")) {
-    syncDisclosureState(rule, body);
-    return;
-  }
-  if (reduceMotion.matches) {
-    clearRuleAnimation(rule, body);
-    rule.open = shouldOpen;
-    syncDisclosureState(rule, body);
-    return;
-  }
-  if (shouldOpen) expandRule(rule, body);
-  else collapseRule(rule, body);
+  const trigger = rule.querySelector(".lens-guide-rule__trigger");
+  const panel = rule.querySelector(".lens-guide-rule__body");
+  if (!trigger || !panel) return;
+  const shouldOpen = forceOpen ?? trigger.getAttribute("aria-expanded") !== "true";
+  syncDisclosureState(rule, panel, shouldOpen);
 }
 
-function expandRule(rule, body) {
-  clearRuleAnimation(rule, body);
-  rule.open = true;
-  setPanelInert(body, false);
-  rule.classList.add("is-animating", "is-expanding");
-  rule.classList.remove("is-collapsing");
-  body.style.height = "0px";
-  body.style.overflow = "hidden";
-  body.style.transition = "none";
-  void body.offsetHeight;
-  body.style.removeProperty("transition");
-  body.style.transitionDuration = `${DISCLOSURE_OPEN_MS}ms`;
-
-  window.requestAnimationFrame(() => {
-    waitForPanelTransition(rule, body, true);
-    body.style.height = `${getPanelContentHeight(body)}px`;
-  });
-  syncDisclosureState(rule, body);
-}
-
-function collapseRule(rule, body) {
-  clearRuleAnimation(rule, body);
-  setPanelInert(body, true);
-  rule.classList.add("is-animating", "is-collapsing");
-  rule.classList.remove("is-expanding");
-  body.style.height = `${getPanelContentHeight(body)}px`;
-  body.style.overflow = "hidden";
-  body.style.transition = "none";
-  void body.offsetHeight;
-  body.style.removeProperty("transition");
-  body.style.transitionDuration = `${DISCLOSURE_CLOSE_MS}ms`;
-
-  window.requestAnimationFrame(() => {
-    waitForPanelTransition(rule, body, false);
-    body.style.height = "0px";
-  });
-  syncDisclosureState(rule, body, false);
-}
-
-function finishRuleAnimation(rule, body, open) {
-  rule._guideIgnoreToggle = rule.open !== open;
-  rule.open = open;
-  clearRuleAnimation(rule, body);
-  syncDisclosureState(rule, body);
-}
-
-function clearRuleAnimation(rule, body) {
-  window.clearTimeout(rule._guideTransitionTimer);
-  rule._guideTransitionTimer = null;
-  if (rule._guideTransitionEnd) {
-    body.removeEventListener("transitionend", rule._guideTransitionEnd);
-    rule._guideTransitionEnd = null;
-  }
-  rule.classList.remove("is-animating", "is-expanding", "is-collapsing");
-  body.style.removeProperty("height");
-  body.style.removeProperty("overflow");
-  body.style.removeProperty("transition");
-  body.style.removeProperty("transition-duration");
-}
-
-function waitForPanelTransition(rule, body, open) {
-  const duration = open ? DISCLOSURE_OPEN_MS : DISCLOSURE_CLOSE_MS;
-  const startedAt = Date.now();
-  const onTransitionEnd = (event) => {
-    if (event.target !== body || event.propertyName !== "height") return;
-    if (Date.now() - startedAt < duration - 40) return;
-    finishRuleAnimation(rule, body, open);
-  };
-  rule._guideTransitionEnd = onTransitionEnd;
-  body.addEventListener("transitionend", onTransitionEnd);
-  rule._guideTransitionTimer = window.setTimeout(() => finishRuleAnimation(rule, body, open), duration + 80);
-}
-
-function getPanelContentHeight(body) {
-  const inner = body.querySelector(":scope > .lens-guide-rule__inner");
-  return Math.ceil(inner?.getBoundingClientRect().height || body.scrollHeight || body.getBoundingClientRect().height);
-}
-
-function syncDisclosureState(rule, body, expanded = rule.open) {
-  const summary = rule.querySelector("summary");
-  summary?.setAttribute("aria-expanded", String(expanded));
-  setPanelInert(body, !expanded);
+function syncDisclosureState(rule, panel, expanded) {
+  const trigger = rule.querySelector(".lens-guide-rule__trigger");
+  trigger?.setAttribute("aria-expanded", String(expanded));
+  panel.classList.toggle("is-open", expanded);
+  setPanelInert(panel, !expanded);
 }
 
 function setPanelInert(panel, inert) {
@@ -380,34 +403,35 @@ function setPanelInert(panel, inert) {
   else panel.removeAttribute("inert");
 }
 
-function nextFrame(callback) {
-  window.requestAnimationFrame(() => window.requestAnimationFrame(callback));
-}
-
 function applyFilters() {
-  if (!searchInput || !categorySelect || !countLabel || !emptyState) return;
+  if (!searchInput || !categorySelect || !emptyState) return;
   const keyword = searchInput.value.trim().toLowerCase();
   const category = categorySelect.value;
   let visibleCount = 0;
 
   rules.forEach((rule) => {
-    const matchesKeyword = !keyword || rule.textContent.toLowerCase().includes(keyword);
+    const searchableText = [rule.dataset.guideTitle, rule.dataset.guideKeywords, rule.textContent]
+      .filter(Boolean)
+      .join(" ")
+      .toLowerCase();
+    const matchesKeyword = !keyword || searchableText.includes(keyword);
     const matchesCategory = category === "all" || rule.dataset.guideCategory === category;
-    const visible = matchesKeyword && matchesCategory;
+    const matchesGuideGroup = keyword || rule.dataset.guideGroup === selectedGuideGroup;
+    const visible = matchesKeyword && matchesCategory && matchesGuideGroup;
     if (!visible) clearHiddenRule(rule);
     rule.hidden = !visible;
     if (visible) visibleCount += 1;
   });
 
-  countLabel.textContent = `${visibleCount}개 패턴`;
+  if (countLabel) countLabel.textContent = `${visibleCount}개 패턴`;
   emptyState.hidden = visibleCount > 0;
+  updateGuideGroups();
 }
 
 function clearHiddenRule(rule) {
-  const body = rule.querySelector(".lens-guide-rule__body");
-  if (!body) return;
-  clearRuleAnimation(rule, body);
-  syncDisclosureState(rule, body);
+  const panel = rule.querySelector(".lens-guide-rule__body");
+  if (!panel) return;
+  syncDisclosureState(rule, panel, false);
 }
 
 function openHashRule() {
@@ -416,22 +440,24 @@ function openHashRule() {
   const rule = document.getElementById(id);
   if (!rule?.classList.contains("lens-guide-rule")) return;
 
+  if (rule.dataset.guideGroup) selectGuideGroup(rule.dataset.guideGroup);
+
   if (rule.hidden) {
     if (searchInput) searchInput.value = "";
     if (categorySelect) categorySelect.value = "all";
+    if (searchInput) searchInput.value = "";
     applyFilters();
   }
 
   toggleRule(rule, true);
-  window.requestAnimationFrame(() => {
-    rule.scrollIntoView({ block: "start", behavior: reduceMotion.matches ? "auto" : "smooth" });
-  });
+  rule.scrollIntoView({ block: "start", behavior: reduceMotion.matches ? "auto" : "smooth" });
 }
 
+setupGuideGroups();
 setupGuideMetadata();
 setupAccordions();
 
-if (searchInput && categorySelect && countLabel && emptyState) {
+if (searchInput && categorySelect && emptyState) {
   searchInput.addEventListener("input", applyFilters);
   categorySelect.addEventListener("change", applyFilters);
   applyFilters();

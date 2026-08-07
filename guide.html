@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="./assets/css/common/layout.css?v=20260806-1">
   <link rel="stylesheet" href="./assets/css/common/header.css?v=20260806-2">
   <link rel="stylesheet" href="./assets/css/common/footer.css?v=20260806-1">
-    <link rel="stylesheet" href="./assets/css/style.css?v=20260806-5">
+    <link rel="stylesheet" href="./assets/css/style.css?v=20260806-12">
 </head>
 <body data-page="guide">
   <div data-include="./assets/includes/skip-navigation.html"></div>
@@ -18,8 +18,8 @@
     <section class="lens-guide-hero">
       <div>
         <span class="lens-eyebrow">Practical accessibility guide</span>
-        <h1>접근성 구현 가이드</h1>
-        <p>실무에서 만드는 화면 요소를 검색해 필요한 HTML, ARIA, 키보드 동작과 구현 예시를 바로 확인합니다.</p>
+        <h1>접근성 패턴 가이드</h1>
+        <p>UI 구현에 필요한 접근성 구조, 키보드 동작, ARIA 속성과 적용 예제를 패턴별로 확인하세요.</p>
       </div>
     </section>
 
@@ -35,7 +35,7 @@
           <div class="lens-guide-tools">
             <label class="lens-guide-field">
               <span>패턴 검색</span>
-              <input type="search" placeholder="예: 탭, 아코디언, 오류 메시지" data-guide-search>
+              <input type="search" placeholder="탭, 팝업, 폼 등 구현할 UI를 검색하세요" data-guide-search>
             </label>
             <label class="lens-guide-field lens-guide-field--select">
               <span>분야</span>
@@ -48,12 +48,11 @@
                 <option value="interaction">키보드와 상태</option>
               </select>
             </label>
-            <span class="lens-guide-tools__count" aria-live="polite" data-guide-count>34개 패턴</span>
           </div>
 
           <div class="lens-guide-rules" data-guide-rules>
-            <details class="lens-guide-rule" data-guide-category="component" id="guide-tabs">
-              <summary><span><strong>탭</strong><small>role, 선택 상태, 연결 관계와 방향키 이동을 함께 구현합니다.</small></span></summary>
+            <section class="lens-guide-rule" data-guide-category="component" id="guide-tabs">
+              <button class="lens-guide-rule__trigger" type="button"><span><strong>탭</strong><small>role, 선택 상태, 연결 관계와 방향키 이동을 함께 구현합니다.</small></span></button>
               <div class="lens-guide-rule__body">
                 <section class="lens-guide-practice"><h3>언제 사용하는가</h3>
                 <p>탭은 여러 콘텐츠 패널 중 하나를 선택해 보여주는 컴포넌트입니다. 단순 페이지 이동 링크에는 탭 역할을 사용하지 않습니다.</p>
@@ -75,12 +74,13 @@
 &lt;div id="panel-detail" role="tabpanel"
   aria-labelledby="tab-detail" tabindex="0" hidden&gt;...&lt;/div&gt;</code></pre></div>
                 <p class="lens-guide-caution"><strong>상태 동기화</strong> 선택이 바뀔 때 <code>aria-selected</code>, <code>tabindex</code>, 패널의 <code>hidden</code>을 함께 갱신합니다.</p>
+                <p class="lens-guide-caution"><strong>활성화 정책</strong> 짧고 즉시 준비되는 패널은 자동 활성화를, 네트워크 요청이나 무거운 콘텐츠는 방향키로 이동 후 <kbd>Enter</kbd>/<kbd>Space</kbd>로 여는 수동 활성화를 사용합니다. 세로 탭은 <code>aria-orientation="vertical"</code>을 선언하고, 패널로 자동 포커스를 옮길 때는 사용자가 패널을 탐색해야 하는 경우에만 이동합니다.</p>
                 <section class="lens-guide-checklist"><h3>검수 체크리스트</h3><ul><li>탭 목록에 의미 있는 이름이 있는가?</li><li>선택된 탭만 <code>aria-selected="true"</code>와 <code>tabindex="0"</code>인가?</li><li>각 탭의 <code>aria-controls</code>가 실제 패널 id와 연결되는가?</li><li>방향키, Home, End 이동 후 포커스와 선택 상태가 어긋나지 않는가?</li></ul></section>
               </div>
-            </details>
+            </section>
 
-            <details class="lens-guide-rule" data-guide-category="component">
-              <summary><span><strong>아코디언</strong><small>제목 버튼과 콘텐츠 영역을 연결하고 펼침 상태를 전달합니다.</small></span></summary>
+            <section class="lens-guide-rule" data-guide-category="component">
+              <button class="lens-guide-rule__trigger" type="button"><span><strong>아코디언</strong><small>제목 버튼과 콘텐츠 영역을 연결하고 펼침 상태를 전달합니다.</small></span></button>
               <div class="lens-guide-rule__body">
                 <p>가장 간단한 구현은 기본 HTML인 <code>details</code>와 <code>summary</code>입니다. 커스텀 디자인이 필요할 때만 버튼 패턴을 사용합니다.</p>
                 <div class="lens-guide-specs">
@@ -97,10 +97,10 @@
   aria-labelledby="faq-button" hidden&gt;...&lt;/div&gt;</code></pre></div>
                 <p class="lens-guide-caution"><strong>상태 동기화</strong> 열 때 <code>aria-expanded="true"</code>와 <code>hidden=false</code>, 닫을 때 반대로 변경합니다. 패널이 많으면 모든 패널에 <code>role="region"</code>을 붙이지 않습니다.</p>
               </div>
-            </details>
+            </section>
 
-            <details class="lens-guide-rule" data-guide-category="component" id="guide-modal">
-              <summary><span><strong>모달과 레이어</strong><small>제목, 내부 포커스, 바깥 조작 차단과 닫은 뒤 복귀가 필요합니다.</small></span></summary>
+            <section class="lens-guide-rule" data-guide-category="component" id="guide-modal">
+              <button class="lens-guide-rule__trigger" type="button"><span><strong>모달과 레이어</strong><small>제목, 내부 포커스, 바깥 조작 차단과 닫은 뒤 복귀가 필요합니다.</small></span></button>
               <div class="lens-guide-rule__body">
                 <section class="lens-guide-practice"><h3>언제 사용하는가</h3>
                 <p>가능하면 기본 <code>dialog</code> 요소와 <code>showModal()</code>을 사용합니다. 단순히 화면만 어둡게 만들고 포커스를 가두지 않으면 모달이 아닙니다.</p>
@@ -118,12 +118,13 @@
   &lt;button type="button" aria-label="닫기"&gt;×&lt;/button&gt;
 &lt;/dialog&gt;</code></pre></div>
                 <p class="lens-guide-caution"><strong>주의</strong> 긴 문서형 모달은 전체 내용을 <code>aria-describedby</code>로 묶지 말고 제목에 먼저 포커스를 두어 구조대로 읽게 합니다.</p>
+                <section class="lens-guide-practice"><h3>레이어 유형과 포커스</h3><p><code>dialog</code>는 사용자의 작업을 잠시 멈추는 대화에, <code>alertdialog</code>는 즉시 확인해야 하는 경고에만 사용합니다. 모달 바깥은 <code>inert</code> 또는 브라우저의 모달 동작으로 비활성화하고, 중첩 모달은 호출 요소와 포커스 반환 순서를 스택으로 관리합니다.</p></section>
                 <section class="lens-guide-checklist"><h3>검수 체크리스트</h3><ul><li>모달 제목이 화면에 보이고 <code>aria-labelledby</code>로 연결되는가?</li><li>열릴 때 포커스가 모달 안으로 이동하는가?</li><li><kbd>Tab</kbd>과 <kbd>Shift</kbd>+<kbd>Tab</kbd>이 모달 내부에서 순환하는가?</li><li><kbd>Escape</kbd> 또는 닫기 버튼으로 닫을 수 있는가?</li><li>닫은 뒤 포커스가 모달을 연 버튼으로 돌아오는가?</li></ul></section>
               </div>
-            </details>
+            </section>
 
-            <details class="lens-guide-rule" data-guide-category="component" id="guide-buttons-links">
-              <summary><span><strong>버튼과 링크</strong><small>실행은 버튼, 페이지 이동은 링크로 만들고 목적이 드러나는 이름을 제공합니다.</small></span></summary>
+            <section class="lens-guide-rule" data-guide-category="component" id="guide-buttons-links">
+              <button class="lens-guide-rule__trigger" type="button"><span><strong>버튼과 링크</strong><small>실행은 버튼, 페이지 이동은 링크로 만들고 목적이 드러나는 이름을 제공합니다.</small></span></button>
               <div class="lens-guide-rule__body">
                 <section class="lens-guide-practice"><h3>언제 사용하는가</h3>
                 <p>클릭 가능한 <code>div</code>를 만들지 않습니다. 화면에 보이는 글자가 있다면 접근 가능한 이름에도 같은 문구가 포함되어야 합니다.</p>
@@ -141,10 +142,10 @@
                 <p class="lens-guide-caution"><strong>주의</strong> 아이콘만 있는 버튼은 시각적 모양이 아니라 실행 결과를 이름으로 제공합니다. 같은 문구가 반복되면 대상 정보를 함께 넣습니다.</p>
                 <section class="lens-guide-checklist"><h3>검수 체크리스트</h3><ul><li>버튼과 링크를 기능 기준에 맞게 구분했는가?</li><li>아이콘 버튼에 동작을 설명하는 이름이 있는가?</li><li>같은 이름의 반복 버튼이 있을 때 대상을 구분할 수 있는가?</li><li>키보드로 이동하고 실행할 수 있는가?</li></ul></section>
               </div>
-            </details>
+            </section>
 
-            <details class="lens-guide-rule" data-guide-category="form">
-              <summary><span><strong>입력 항목명, 도움말과 오류</strong><small>보이는 label을 연결하고 설명과 오류를 입력칸에 함께 전달합니다.</small></span></summary>
+            <section class="lens-guide-rule" data-guide-category="form">
+              <button class="lens-guide-rule__trigger" type="button"><span><strong>입력 항목명, 도움말과 오류</strong><small>보이는 label을 연결하고 설명과 오류를 입력칸에 함께 전달합니다.</small></span></button>
               <div class="lens-guide-rule__body">
                 <p><code>placeholder</code>는 입력 예시일 뿐 항목명을 대신하지 않습니다. 오류가 생기면 어떤 항목을 어떻게 고쳐야 하는지 구체적으로 안내합니다.</p>
                 <div class="lens-guide-specs">
@@ -157,11 +158,12 @@
   aria-describedby="email-help email-error"&gt;
 &lt;p id="email-help"&gt;업무용 이메일을 입력하세요.&lt;/p&gt;
 &lt;p id="email-error"&gt;example@company.com 형식으로 입력하세요.&lt;/p&gt;</code></pre></div>
+                <p class="lens-guide-caution"><strong>서버 오류</strong> 서버가 반환한 오류도 해당 필드의 <code>aria-invalid</code>, <code>aria-describedby</code> 또는 <code>aria-errormessage</code>에 연결하고, 여러 오류는 제출 후 오류 요약에서 첫 오류로 이동할 수 있게 합니다.</p>
               </div>
-            </details>
+            </section>
 
-            <details class="lens-guide-rule" data-guide-category="form">
-              <summary><span><strong>체크박스와 라디오 그룹</strong><small>기본 입력 요소를 사용하고 그룹 질문은 fieldset과 legend로 제공합니다.</small></span></summary>
+            <section class="lens-guide-rule" data-guide-category="form">
+              <button class="lens-guide-rule__trigger" type="button"><span><strong>체크박스와 라디오 그룹</strong><small>기본 입력 요소를 사용하고 그룹 질문은 fieldset과 legend로 제공합니다.</small></span></button>
               <div class="lens-guide-rule__body">
                 <p>디자인 때문에 기본 입력을 숨기더라도 포커스와 상태 전달이 유지되어야 합니다. <code>display:none</code>으로 제거한 입력은 키보드로 접근할 수 없습니다.</p>
                 <div class="lens-guide-specs">
@@ -174,10 +176,10 @@
   &lt;label&gt;&lt;input type="radio" name="notice" value="sms"&gt; 문자&lt;/label&gt;
 &lt;/fieldset&gt;</code></pre></div>
               </div>
-            </details>
+            </section>
 
-            <details class="lens-guide-rule" data-guide-category="form">
-              <summary><span><strong>선택창과 자동완성</strong><small>기본 select를 우선 사용하고 커스텀 콤보박스는 전체 키보드 동작을 구현합니다.</small></span></summary>
+            <section class="lens-guide-rule" data-guide-category="form">
+              <button class="lens-guide-rule__trigger" type="button"><span><strong>선택창과 자동완성</strong><small>기본 select를 우선 사용하고 커스텀 콤보박스는 전체 키보드 동작을 구현합니다.</small></span></button>
               <div class="lens-guide-rule__body">
                 <p>단순 선택은 기본 <code>select</code>가 가장 안전합니다. 검색 가능한 커스텀 선택창이 꼭 필요할 때만 콤보박스 패턴을 구현합니다.</p>
                 <div class="lens-guide-specs">
@@ -190,11 +192,12 @@
   &lt;option value="product"&gt;상품 문의&lt;/option&gt;
   &lt;option value="payment"&gt;결제 문의&lt;/option&gt;
 &lt;/select&gt;</code></pre></div>
+                <p class="lens-guide-caution"><strong>자동완성 유형</strong> 추천 목록만 보여주는 입력, 목록에서 하나를 선택하는 콤보박스, 자유 입력을 허용하는 콤보박스를 구분합니다. 커스텀 위젯은 <code>aria-activedescendant</code>와 실제 활성 옵션을 동기화하고, 입력 중 IME 조합과 모바일 키보드를 가로막지 않습니다.</p>
               </div>
-            </details>
+            </section>
 
-            <details class="lens-guide-rule" data-guide-category="content">
-              <summary><span><strong>이미지 대체 텍스트</strong><small>이미지가 전달하는 정보와 기능에 따라 alt를 다르게 작성합니다.</small></span></summary>
+            <section class="lens-guide-rule" data-guide-category="content">
+              <button class="lens-guide-rule__trigger" type="button"><span><strong>이미지 대체 텍스트</strong><small>이미지가 전달하는 정보와 기능에 따라 alt를 다르게 작성합니다.</small></span></button>
               <div class="lens-guide-rule__body">
                 <div class="lens-guide-specs">
                   <section><h3>정보 이미지</h3><ul><li>파일명이 아니라 이미지가 전달하는 내용을 작성</li><li>주변 문구와 같은 설명을 반복하지 않음</li><li>차트는 핵심 요약과 상세 데이터를 함께 제공</li></ul></section>
@@ -204,21 +207,22 @@
 &lt;img src="divider.png" alt=""&gt;
 &lt;a href="/home"&gt;&lt;img src="logo.svg" alt="A11Y Inspector 홈"&gt;&lt;/a&gt;</code></pre></div>
               </div>
-            </details>
+            </section>
 
-            <details class="lens-guide-rule" data-guide-category="content">
-              <summary><span><strong>글자와 UI 명도 대비</strong><small>글자 크기와 굵기를 판정한 뒤 실제 배경색과의 대비를 확인합니다.</small></span></summary>
+            <section class="lens-guide-rule" data-guide-category="content">
+              <button class="lens-guide-rule__trigger" type="button"><span><strong>글자와 UI 명도 대비</strong><small>글자 크기와 굵기를 판정한 뒤 실제 배경색과의 대비를 확인합니다.</small></span></button>
               <div class="lens-guide-rule__body">
                 <div class="lens-guide-specs">
                   <section><h3>글자 기준</h3><ul><li>일반 글자: 최소 <strong>4.5:1</strong></li><li>24px 이상 일반 글자: 최소 <strong>3:1</strong></li><li>18.66px 이상 굵은 글자: 최소 <strong>3:1</strong></li><li>로고와 비활성 UI의 글자는 예외</li></ul></section>
                   <section><h3>글자 외 기준</h3><ul><li>입력창 경계와 선택 상태: 최소 <strong>3:1</strong></li><li>정보를 전달하는 아이콘과 그래픽: 최소 <strong>3:1</strong></li><li>오류·선택 상태를 색상만으로 구분하지 않음</li></ul></section>
                 </div>
                 <p class="lens-guide-caution"><strong>확인 방법</strong> 반투명 색상, 이미지 배경, 그라데이션 위 글자는 최종 합성된 실제 픽셀 색을 기준으로 가장 대비가 낮은 지점을 확인합니다.</p>
+                <p class="lens-guide-caution"><strong>확대와 환경</strong> 텍스트 간격을 줄이지 않고 200% 확대와 400% 리플로우에서 내용이 잘리지 않는지 확인합니다. <code>forced-colors</code>와 고대비 환경에서도 경계·포커스·상태가 색상 하나에 의존하지 않도록 기본 테두리와 텍스트를 유지합니다.</p>
               </div>
-            </details>
+            </section>
 
-            <details class="lens-guide-rule" data-guide-category="content">
-              <summary><span><strong>데이터 표</strong><small>caption으로 표의 목적을 설명하고 th와 scope로 데이터 관계를 연결합니다.</small></span></summary>
+            <section class="lens-guide-rule" data-guide-category="content">
+              <button class="lens-guide-rule__trigger" type="button"><span><strong>데이터 표</strong><small>caption으로 표의 목적을 설명하고 th와 scope로 데이터 관계를 연결합니다.</small></span></button>
               <div class="lens-guide-rule__body">
                 <p>레이아웃을 맞추는 용도로 표를 사용하지 않습니다. 데이터 표는 표만 읽어도 무엇을 비교하는지 이해할 수 있어야 합니다.</p>
                 <div class="lens-guide-specs">
@@ -237,10 +241,10 @@
   &lt;/tr&gt;&lt;/tbody&gt;
 &lt;/table&gt;</code></pre></div>
               </div>
-            </details>
+            </section>
 
-            <details class="lens-guide-rule" data-guide-category="structure">
-              <summary><span><strong>제목과 페이지 영역</strong><small>내용 관계에 맞는 제목 단계와 header, nav, main, footer 영역을 사용합니다.</small></span></summary>
+            <section class="lens-guide-rule" data-guide-category="structure">
+              <button class="lens-guide-rule__trigger" type="button"><span><strong>제목과 페이지 영역</strong><small>내용 관계에 맞는 제목 단계와 header, nav, main, footer 영역을 사용합니다.</small></span></button>
               <div class="lens-guide-rule__body">
                 <div class="lens-guide-specs">
                   <section><h3>제목</h3><ul><li>페이지 대표 제목을 명확히 제공</li><li>내용 계층에 따라 <code>h1 → h2 → h3</code> 순서 사용</li><li>글자 크기 때문에 제목 단계를 선택하지 않음</li></ul></section>
@@ -254,10 +258,10 @@
 &lt;/main&gt;
 &lt;footer&gt;...&lt;/footer&gt;</code></pre></div>
               </div>
-            </details>
+            </section>
 
-            <details class="lens-guide-rule" data-guide-category="interaction">
-              <summary><span><strong>키보드 포커스</strong><small>모든 기능에 이동할 수 있고 현재 위치가 항상 분명하게 보여야 합니다.</small></span></summary>
+            <section class="lens-guide-rule" data-guide-category="interaction">
+              <button class="lens-guide-rule__trigger" type="button"><span><strong>키보드 포커스</strong><small>모든 기능에 이동할 수 있고 현재 위치가 항상 분명하게 보여야 합니다.</small></span></button>
               <div class="lens-guide-rule__body">
                 <div class="lens-guide-specs">
                   <section><h3>이동 순서</h3><ul><li>DOM의 의미 있는 순서와 화면 순서를 일치</li><li><code>tabindex</code> 양수 값 사용 금지</li><li>숨겨진 콘텐츠의 조작 요소는 Tab 순서에서 제외</li><li>고정 영역이 포커스를 완전히 가리지 않게 함</li></ul></section>
@@ -267,11 +271,12 @@
   outline: 3px solid #0068d9;
   outline-offset: 3px;
 }</code></pre></div>
+                <p class="lens-guide-caution"><strong>동적 화면</strong> 새 뷰의 제목이나 콘텐츠 시작점으로 한 번만 포커스를 이동하고, 단순한 검색 결과 갱신에는 포커스를 유지한 채 상태 메시지를 사용합니다. <code>scroll-margin-block-start</code>로 sticky header 아래 가림도 방지합니다.</p>
               </div>
-            </details>
+            </section>
 
-            <details class="lens-guide-rule" data-guide-category="interaction">
-              <summary><span><strong>상태 메시지와 알림</strong><small>저장 완료, 검색 결과, 오류처럼 바뀐 내용을 포커스 이동 없이 알립니다.</small></span></summary>
+            <section class="lens-guide-rule" data-guide-category="interaction">
+              <button class="lens-guide-rule__trigger" type="button"><span><strong>상태 메시지와 알림</strong><small>저장 완료, 검색 결과, 오류처럼 바뀐 내용을 포커스 이동 없이 알립니다.</small></span></button>
               <div class="lens-guide-rule__body">
                 <div class="lens-guide-specs">
                   <section><h3>role="status"</h3><ul><li>저장 완료, 검색 결과 수처럼 급하지 않은 변경</li><li>사용자의 현재 작업을 끊지 않고 안내</li><li><code>aria-live="polite"</code>와 같은 성격</li></ul></section>
@@ -281,12 +286,12 @@
 &lt;p id="payment-error" role="alert"&gt;
   결제가 완료되지 않았습니다. 카드 정보를 확인하세요.
 &lt;/p&gt;</code></pre></div>
-                <p class="lens-guide-caution"><strong>구현 팁</strong> 라이브 영역은 가능하면 페이지에 미리 두고, 작업 결과가 생겼을 때 내부 문구를 갱신합니다.</p>
+                <p class="lens-guide-caution"><strong>선택 기준</strong> <code>aria-live="polite"</code>는 작업을 끊지 않는 결과·로딩 완료, <code>assertive</code> 또는 <code>alert</code>는 즉시 대응할 오류에 제한합니다. <code>aria-atomic="true"</code>는 전체 문장을, <code>aria-relevant</code>는 추가·삭제 등 필요한 변화만 알릴 때 사용합니다. 같은 문구를 반복해서 삽입하지 말고 실제 상태가 바뀔 때만 갱신합니다.</p>
               </div>
-            </details>
+            </section>
 
-            <details class="lens-guide-rule" data-guide-category="component">
-              <summary><span><strong>메뉴 버튼과 드롭다운</strong><small>버튼의 펼침 상태와 메뉴 항목의 방향키 이동, 닫기 동작을 구현합니다.</small></span></summary>
+            <section class="lens-guide-rule" data-guide-category="component">
+              <button class="lens-guide-rule__trigger" type="button"><span><strong>메뉴 버튼과 드롭다운</strong><small>버튼의 펼침 상태와 메뉴 항목의 방향키 이동, 닫기 동작을 구현합니다.</small></span></button>
               <div class="lens-guide-rule__body">
                 <p>단순 사이트 링크 목록은 일반 탐색 영역으로 만들고, 애플리케이션 명령 목록일 때 메뉴 패턴을 사용합니다.</p>
                 <div class="lens-guide-specs">
@@ -300,11 +305,12 @@
   &lt;li role="none"&gt;&lt;button role="menuitem" tabindex="-1"&gt;복사&lt;/button&gt;&lt;/li&gt;
   &lt;li role="none"&gt;&lt;button role="menuitem" tabindex="-1"&gt;삭제&lt;/button&gt;&lt;/li&gt;
 &lt;/ul&gt;</code></pre></div>
+                <p class="lens-guide-caution"><strong>탐색과 명령</strong> 사이트 이동 링크 목록은 <code>nav</code>와 링크로 만들고, 파일 삭제 같은 명령에만 <code>role="menu"</code>를 사용합니다. 바깥 클릭과 <kbd>Escape</kbd>로 닫고 호출 버튼으로 포커스를 복귀하며, 중첩 메뉴는 부모 메뉴의 포커스와 닫힘 순서를 보존합니다.</p>
               </div>
-            </details>
+            </section>
 
-            <details class="lens-guide-rule" data-guide-category="component">
-              <summary><span><strong>툴팁과 도움말</strong><small>마우스 hover뿐 아니라 키보드 포커스에서도 같은 설명을 확인할 수 있게 합니다.</small></span></summary>
+            <section class="lens-guide-rule" data-guide-category="component">
+              <button class="lens-guide-rule__trigger" type="button"><span><strong>툴팁과 도움말</strong><small>마우스 hover뿐 아니라 키보드 포커스에서도 같은 설명을 확인할 수 있게 합니다.</small></span></button>
               <div class="lens-guide-rule__body">
                 <div class="lens-guide-specs">
                   <section><h3>표시 조건</h3><ul><li>대상에 hover 또는 포커스가 오면 표시</li><li>대상과 툴팁 위에 포인터가 있는 동안 유지</li><li><kbd>Escape</kbd>로 닫을 수 있게 함</li><li>툴팁 자체에는 조작 요소를 넣지 않음</li></ul></section>
@@ -315,12 +321,12 @@
 &lt;span id="password-tip" role="tooltip" hidden&gt;
   영문, 숫자, 특수문자를 조합하세요.
 &lt;/span&gt;</code></pre></div>
-                <p class="lens-guide-caution"><strong>주의</strong> 반드시 읽어야 하는 안내는 툴팁에 숨기지 말고 화면에 항상 보이는 문구로 제공합니다.</p>
+                <p class="lens-guide-caution"><strong>주의</strong> 반드시 읽어야 하는 안내는 툴팁에 숨기지 말고 화면에 항상 보이는 문구로 제공합니다. 터치에서는 hover가 없으므로 버튼을 눌러 열고 다시 눌러 닫거나, 설명을 인라인으로 제공합니다. 포인터·포커스가 대상과 설명 사이를 이동하는 동안 유지하고 <kbd>Escape</kbd>로 닫습니다.</p>
               </div>
-            </details>
+            </section>
 
-            <details class="lens-guide-rule" data-guide-category="component">
-              <summary><span><strong>캐러셀과 슬라이드</strong><small>이전·다음·정지 버튼을 제공하고 보이지 않는 슬라이드를 읽지 않게 처리합니다.</small></span></summary>
+            <section class="lens-guide-rule" data-guide-category="component">
+              <button class="lens-guide-rule__trigger" type="button"><span><strong>캐러셀과 슬라이드</strong><small>이전·다음·정지 버튼을 제공하고 보이지 않는 슬라이드를 읽지 않게 처리합니다.</small></span></button>
               <div class="lens-guide-rule__body">
                 <div class="lens-guide-specs">
                   <section><h3>필수 조작</h3><ul><li>이전·다음 버튼에 구체적인 이름 제공</li><li>자동 전환 시 정지·재생 버튼 제공</li><li>포커스 진입과 hover 시 자동 전환 정지</li><li>사용자가 다시 시작하기 전 자동 재생 금지</li></ul></section>
@@ -332,11 +338,12 @@
   &lt;div role="group" aria-roledescription="slide" aria-label="1 / 3"&gt;...&lt;/div&gt;
   &lt;button type="button" aria-label="다음 소식"&gt;›&lt;/button&gt;
 &lt;/section&gt;</code></pre></div>
+                <p class="lens-guide-caution"><strong>상태와 포커스</strong> 현재 슬라이드 번호와 이름을 상태로 제공하고, 내부 링크·버튼이 있는 슬라이드는 숨겨진 동안 포커스와 읽기 순서에서 제외합니다. <code>aria-roledescription</code>은 보조기기가 지원하지 않을 수 있으므로 기본 role과 이름을 먼저 완성합니다.</p>
               </div>
-            </details>
+            </section>
 
-            <details class="lens-guide-rule" data-guide-category="structure">
-              <summary><span><strong>페이지네이션</strong><small>페이지 이동 영역에 이름을 붙이고 현재 페이지를 코드로 표시합니다.</small></span></summary>
+            <section class="lens-guide-rule" data-guide-category="structure">
+              <button class="lens-guide-rule__trigger" type="button"><span><strong>페이지네이션</strong><small>페이지 이동 영역에 이름을 붙이고 현재 페이지를 코드로 표시합니다.</small></span></button>
               <div class="lens-guide-rule__body">
                 <div class="lens-guide-specs">
                   <section><h3>필수 구현</h3><ul><li><code>nav</code>에 “페이지 이동” 같은 이름 제공</li><li>각 링크 이름에 이동할 페이지 번호 포함</li><li>현재 페이지에 <code>aria-current="page"</code></li><li>비활성 이전·다음은 링크로 만들지 않음</li></ul></section>
@@ -348,10 +355,10 @@
   &lt;a href="?page=3" aria-label="3페이지"&gt;3&lt;/a&gt;
 &lt;/nav&gt;</code></pre></div>
               </div>
-            </details>
+            </section>
 
-            <details class="lens-guide-rule" data-guide-category="structure">
-              <summary><span><strong>현재 위치와 브레드크럼</strong><small>계층을 목록으로 표현하고 현재 페이지를 aria-current로 구분합니다.</small></span></summary>
+            <section class="lens-guide-rule" data-guide-category="structure">
+              <button class="lens-guide-rule__trigger" type="button"><span><strong>현재 위치와 브레드크럼</strong><small>계층을 목록으로 표현하고 현재 페이지를 aria-current로 구분합니다.</small></span></button>
               <div class="lens-guide-rule__body">
                 <div class="lens-guide-specs">
                   <section><h3>필수 구조</h3><ul><li>이름이 있는 <code>nav</code> 영역 사용</li><li>상위 경로를 순서 있는 목록으로 구성</li><li>현재 페이지 링크에 <code>aria-current="page"</code></li><li>시각적 구분자는 보조기기에서 제외</li></ul></section>
@@ -364,10 +371,10 @@
   &lt;/ol&gt;
 &lt;/nav&gt;</code></pre></div>
               </div>
-            </details>
+            </section>
 
-            <details class="lens-guide-rule" data-guide-category="form">
-              <summary><span><strong>날짜 입력과 달력</strong><small>기본 날짜 입력을 우선하고 커스텀 달력에는 이름, 상태와 전체 키보드 조작을 제공합니다.</small></span></summary>
+            <section class="lens-guide-rule" data-guide-category="form">
+              <button class="lens-guide-rule__trigger" type="button"><span><strong>날짜 입력과 달력</strong><small>기본 날짜 입력을 우선하고 커스텀 달력에는 이름, 상태와 전체 키보드 조작을 제공합니다.</small></span></button>
               <div class="lens-guide-rule__body">
                 <p>단순 날짜 입력은 <code>input type="date"</code> 또는 연·월·일 입력칸이 안전합니다. 커스텀 달력은 복합 위젯이므로 충분한 테스트가 필요합니다.</p>
                 <div class="lens-guide-specs">
@@ -380,10 +387,10 @@
   aria-describedby="date-help"&gt;
 &lt;p id="date-help"&gt;2026년 안에서 선택하세요.&lt;/p&gt;</code></pre></div>
               </div>
-            </details>
+            </section>
 
-            <details class="lens-guide-rule" data-guide-category="form">
-              <summary><span><strong>파일 업로드</strong><small>선택 가능한 형식과 용량을 먼저 안내하고 업로드 상태와 오류를 전달합니다.</small></span></summary>
+            <section class="lens-guide-rule" data-guide-category="form">
+              <button class="lens-guide-rule__trigger" type="button"><span><strong>파일 업로드</strong><small>선택 가능한 형식과 용량을 먼저 안내하고 업로드 상태와 오류를 전달합니다.</small></span></button>
               <div class="lens-guide-rule__body">
                 <div class="lens-guide-specs">
                   <section><h3>선택 전</h3><ul><li>보이는 label을 파일 입력과 연결</li><li>허용 확장자, 최대 용량, 개수 안내</li><li>드래그 전용 영역에도 파일 선택 버튼 제공</li></ul></section>
@@ -395,10 +402,10 @@
 &lt;p id="file-help"&gt;PDF, JPG, PNG 형식, 최대 10MB&lt;/p&gt;
 &lt;p role="status" aria-live="polite"&gt;&lt;/p&gt;</code></pre></div>
               </div>
-            </details>
+            </section>
 
-            <details class="lens-guide-rule" data-guide-category="content">
-              <summary><span><strong>동영상과 음성</strong><small>자막과 원고를 제공하고 자동 재생되는 소리를 사용자가 제어할 수 있게 합니다.</small></span></summary>
+            <section class="lens-guide-rule" data-guide-category="content">
+              <button class="lens-guide-rule__trigger" type="button"><span><strong>동영상과 음성</strong><small>자막과 원고를 제공하고 자동 재생되는 소리를 사용자가 제어할 수 있게 합니다.</small></span></button>
               <div class="lens-guide-rule__body">
                 <div class="lens-guide-specs">
                   <section><h3>콘텐츠 대안</h3><ul><li>녹화 영상의 말소리와 중요 효과음에 자막 제공</li><li>음성 전용 콘텐츠에 원고 제공</li><li>영상만으로 전달되는 중요 정보에 음성 설명 제공</li></ul></section>
@@ -410,10 +417,10 @@
     srclang="ko" label="한국어" default&gt;
 &lt;/video&gt;</code></pre></div>
               </div>
-            </details>
+            </section>
 
-            <details class="lens-guide-rule" data-guide-category="structure">
-              <summary><span><strong>iframe과 외부 콘텐츠</strong><small>프레임의 목적을 title로 설명하고 내부 콘텐츠도 키보드로 들어가고 나올 수 있게 합니다.</small></span></summary>
+            <section class="lens-guide-rule" data-guide-category="structure">
+              <button class="lens-guide-rule__trigger" type="button"><span><strong>iframe과 외부 콘텐츠</strong><small>프레임의 목적을 title로 설명하고 내부 콘텐츠도 키보드로 들어가고 나올 수 있게 합니다.</small></span></button>
               <div class="lens-guide-rule__body">
                 <div class="lens-guide-specs">
                   <section><h3>필수 구현</h3><ul><li>각 <code>iframe</code>에 내용을 설명하는 고유한 <code>title</code></li><li>장식·추적용 프레임은 사용자 탐색에서 제외</li><li>내부 문서도 제목, 언어, 키보드 접근성 확인</li></ul></section>
@@ -425,10 +432,10 @@
   allowfullscreen&gt;
 &lt;/iframe&gt;</code></pre></div>
               </div>
-            </details>
+            </section>
 
-            <details class="lens-guide-rule" data-guide-category="interaction">
-              <summary><span><strong>움직임과 시간 제한</strong><small>자동 움직임은 멈출 수 있게 하고 제한 시간이 끝나기 전에 연장 방법을 제공합니다.</small></span></summary>
+            <section class="lens-guide-rule" data-guide-category="interaction">
+              <button class="lens-guide-rule__trigger" type="button"><span><strong>움직임과 시간 제한</strong><small>자동 움직임은 멈출 수 있게 하고 제한 시간이 끝나기 전에 연장 방법을 제공합니다.</small></span></button>
               <div class="lens-guide-rule__body">
                 <div class="lens-guide-specs">
                   <section><h3>움직임</h3><ul><li>5초 넘는 자동 이동·깜빡임에 정지 기능 제공</li><li><code>prefers-reduced-motion</code> 환경에서 불필요한 모션 축소</li><li>번쩍임은 초당 3회를 넘지 않게 함</li></ul></section>
@@ -442,10 +449,10 @@
   }
 }</code></pre></div>
               </div>
-            </details>
+            </section>
 
-            <details class="lens-guide-rule" data-guide-category="interaction">
-              <summary><span><strong>드래그와 복잡한 제스처</strong><small>드래그, 스와이프, 핀치 없이도 같은 기능을 실행할 수 있는 단순 조작을 제공합니다.</small></span></summary>
+            <section class="lens-guide-rule" data-guide-category="interaction">
+              <button class="lens-guide-rule__trigger" type="button"><span><strong>드래그와 복잡한 제스처</strong><small>드래그, 스와이프, 핀치 없이도 같은 기능을 실행할 수 있는 단순 조작을 제공합니다.</small></span></button>
               <div class="lens-guide-rule__body">
                 <div class="lens-guide-specs">
                   <section><h3>대체 조작</h3><ul><li>순서 변경에는 위로·아래로 이동 버튼 제공</li><li>슬라이더에는 숫자 입력 또는 증감 버튼 제공</li><li>지도 확대에는 +·− 버튼 제공</li><li>스와이프 콘텐츠에는 이전·다음 버튼 제공</li></ul></section>
@@ -457,10 +464,10 @@
   &lt;button type="button" aria-label="배송지 정보를 아래로 이동"&gt;아래로&lt;/button&gt;
 &lt;/li&gt;</code></pre></div>
               </div>
-            </details>
+            </section>
 
-            <details class="lens-guide-rule" data-guide-category="component">
-              <summary><span><strong>스위치와 토글 버튼</strong><small>켜짐·꺼짐 상태를 코드로 전달하고 상태가 바뀌어도 이름은 유지합니다.</small></span></summary>
+            <section class="lens-guide-rule" data-guide-category="component">
+              <button class="lens-guide-rule__trigger" type="button"><span><strong>스위치와 토글 버튼</strong><small>켜짐·꺼짐 상태를 코드로 전달하고 상태가 바뀌어도 이름은 유지합니다.</small></span></button>
               <div class="lens-guide-rule__body">
                 <div class="lens-guide-specs">
                   <section><h3>스위치</h3><ul><li><code>role="switch"</code>와 <code>aria-checked</code> 사용</li><li><kbd>Space</kbd>로 상태 변경, Enter 지원 권장</li><li>“알림 켜기”처럼 상태에 따라 이름을 바꾸지 않음</li></ul></section>
@@ -471,10 +478,10 @@
   마케팅 알림
 &lt;/button&gt;</code></pre></div>
               </div>
-            </details>
+            </section>
 
-            <details class="lens-guide-rule" data-guide-category="component">
-              <summary><span><strong>로딩과 진행률</strong><small>작업 중인지, 얼마나 진행됐는지, 완료됐는지를 화면과 보조기기에 함께 전달합니다.</small></span></summary>
+            <section class="lens-guide-rule" data-guide-category="component">
+              <button class="lens-guide-rule__trigger" type="button"><span><strong>로딩과 진행률</strong><small>작업 중인지, 얼마나 진행됐는지, 완료됐는지를 화면과 보조기기에 함께 전달합니다.</small></span></button>
               <div class="lens-guide-rule__body">
                 <div class="lens-guide-specs">
                   <section><h3>진행률을 알 때</h3><ul><li>기본 <code>progress</code> 요소 우선</li><li>커스텀은 <code>role="progressbar"</code></li><li><code>aria-valuemin</code>, <code>aria-valuemax</code>, <code>aria-valuenow</code> 제공</li></ul></section>
@@ -484,10 +491,10 @@
 &lt;progress id="upload-progress" max="100" value="65"&gt;65%&lt;/progress&gt;
 &lt;p role="status"&gt;파일 업로드가 완료되었습니다.&lt;/p&gt;</code></pre></div>
               </div>
-            </details>
+            </section>
 
-            <details class="lens-guide-rule" data-guide-category="form">
-              <summary><span><strong>단계형 폼과 스테퍼</strong><small>현재 단계와 전체 흐름을 알려주고 단계가 바뀌면 새 내용의 시작점을 안내합니다.</small></span></summary>
+            <section class="lens-guide-rule" data-guide-category="form">
+              <button class="lens-guide-rule__trigger" type="button"><span><strong>단계형 폼과 스테퍼</strong><small>현재 단계와 전체 흐름을 알려주고 단계가 바뀌면 새 내용의 시작점을 안내합니다.</small></span></button>
               <div class="lens-guide-rule__body">
                 <div class="lens-guide-specs">
                   <section><h3>단계 표시</h3><ul><li>순서 있는 목록으로 전체 단계 구성</li><li>현재 단계에 <code>aria-current="step"</code></li><li>완료·현재·예정 상태를 색상만으로 구분하지 않음</li></ul></section>
@@ -501,10 +508,10 @@
   &lt;/ol&gt;
 &lt;/nav&gt;</code></pre></div>
               </div>
-            </details>
+            </section>
 
-            <details class="lens-guide-rule" data-guide-category="component">
-              <summary><span><strong>전체 클릭 카드</strong><small>카드 전체를 눌러도 링크의 목적과 내부 버튼의 기능이 서로 충돌하지 않게 구성합니다.</small></span></summary>
+            <section class="lens-guide-rule" data-guide-category="component">
+              <button class="lens-guide-rule__trigger" type="button"><span><strong>전체 클릭 카드</strong><small>카드 전체를 눌러도 링크의 목적과 내부 버튼의 기능이 서로 충돌하지 않게 구성합니다.</small></span></button>
               <div class="lens-guide-rule__body">
                 <div class="lens-guide-specs">
                   <section><h3>링크 하나인 카드</h3><ul><li>제목을 명확한 링크로 만들기</li><li>카드 전체 클릭 영역은 CSS로 확장 가능</li><li>읽을 필요 없는 문구를 링크 이름에 과도하게 포함하지 않음</li></ul></section>
@@ -516,10 +523,10 @@
   &lt;button type="button" aria-label="자동차보험 관심 상품 추가"&gt;찜&lt;/button&gt;
 &lt;/article&gt;</code></pre></div>
               </div>
-            </details>
+            </section>
 
-            <details class="lens-guide-rule" data-guide-category="form">
-              <summary><span><strong>개인정보 입력과 자동완성</strong><small>이름, 연락처, 주소의 목적을 autocomplete 값으로 정확히 지정합니다.</small></span></summary>
+            <section class="lens-guide-rule" data-guide-category="form">
+              <button class="lens-guide-rule__trigger" type="button"><span><strong>개인정보 입력과 자동완성</strong><small>이름, 연락처, 주소의 목적을 autocomplete 값으로 정확히 지정합니다.</small></span></button>
               <div class="lens-guide-rule__body">
                 <div class="lens-guide-specs">
                   <section><h3>자주 쓰는 값</h3><ul><li>이름: <code>name</code>, <code>given-name</code>, <code>family-name</code></li><li>연락처: <code>email</code>, <code>tel</code></li><li>주소: <code>street-address</code>, <code>postal-code</code></li><li>로그인: <code>username</code>, <code>current-password</code></li></ul></section>
@@ -530,10 +537,10 @@
 &lt;label for="postal-code"&gt;우편번호&lt;/label&gt;
 &lt;input id="postal-code" autocomplete="shipping postal-code"&gt;</code></pre></div>
               </div>
-            </details>
+            </section>
 
-            <details class="lens-guide-rule" data-guide-category="structure">
-              <summary><span><strong>본문 바로가기</strong><small>반복되는 헤더와 메뉴를 건너뛰고 키보드로 본문에 바로 도달하게 합니다.</small></span></summary>
+            <section class="lens-guide-rule" data-guide-category="structure">
+              <button class="lens-guide-rule__trigger" type="button"><span><strong>본문 바로가기</strong><small>반복되는 헤더와 메뉴를 건너뛰고 키보드로 본문에 바로 도달하게 합니다.</small></span></button>
               <div class="lens-guide-rule__body">
                 <div class="lens-guide-specs">
                   <section><h3>구현 조건</h3><ul><li>페이지의 첫 번째 포커스 요소로 배치</li><li>평소 숨겨도 포커스를 받으면 화면에 표시</li><li>링크 목적지와 <code>main</code>의 id 일치</li><li>이동 후 본문 시작 위치가 가려지지 않게 함</li></ul></section>
@@ -542,10 +549,10 @@
 &lt;header&gt;...&lt;/header&gt;
 &lt;main id="main-content"&gt;...&lt;/main&gt;</code></pre></div>
               </div>
-            </details>
+            </section>
 
-            <details class="lens-guide-rule" data-guide-category="structure">
-              <summary><span><strong>페이지 제목과 언어</strong><small>브라우저 탭에서 페이지를 구분하고 화면 읽기 프로그램이 올바른 언어로 읽게 합니다.</small></span></summary>
+            <section class="lens-guide-rule" data-guide-category="structure">
+              <button class="lens-guide-rule__trigger" type="button"><span><strong>페이지 제목과 언어</strong><small>브라우저 탭에서 페이지를 구분하고 화면 읽기 프로그램이 올바른 언어로 읽게 합니다.</small></span></button>
               <div class="lens-guide-rule__body">
                 <div class="lens-guide-specs">
                   <section><h3>페이지 제목</h3><ul><li>페이지마다 목적을 설명하는 고유한 <code>title</code></li><li>중요한 페이지 이름을 앞쪽에 배치</li><li>화면 전환 시 제목도 현재 내용에 맞게 갱신</li></ul></section>
@@ -555,10 +562,10 @@
 &lt;head&gt;&lt;title&gt;자동차보험 가입 · A11Y Inspector&lt;/title&gt;&lt;/head&gt;
 &lt;body&gt;&lt;p lang="en"&gt;Accessibility for everyone.&lt;/p&gt;&lt;/body&gt;</code></pre></div>
               </div>
-            </details>
+            </section>
 
-            <details class="lens-guide-rule" data-guide-category="structure">
-              <summary><span><strong>숨김 콘텐츠</strong><small>화면에서 숨길지, 보조기기에서만 숨길지 목적에 맞는 방법을 선택합니다.</small></span></summary>
+            <section class="lens-guide-rule" data-guide-category="structure">
+              <button class="lens-guide-rule__trigger" type="button"><span><strong>숨김 콘텐츠</strong><small>화면에서 숨길지, 보조기기에서만 숨길지 목적에 맞는 방법을 선택합니다.</small></span></button>
               <div class="lens-guide-rule__body">
                 <div class="lens-guide-specs">
                   <section><h3>모두에게 숨김</h3><ul><li><code>hidden</code> 또는 <code>display:none</code> 사용</li><li>닫힌 메뉴와 패널 안 조작 요소도 포커스에서 제외</li><li><code>aria-hidden="true"</code> 안에 포커스 요소를 두지 않음</li></ul></section>
@@ -573,10 +580,10 @@
   white-space: nowrap;
 }</code></pre></div>
               </div>
-            </details>
+            </section>
 
-            <details class="lens-guide-rule" data-guide-category="content">
-              <summary><span><strong>차트와 데이터 시각화</strong><small>색과 그래픽을 보지 못해도 핵심 결론과 정확한 데이터를 확인할 수 있게 합니다.</small></span></summary>
+            <section class="lens-guide-rule" data-guide-category="content">
+              <button class="lens-guide-rule__trigger" type="button"><span><strong>차트와 데이터 시각화</strong><small>색과 그래픽을 보지 못해도 핵심 결론과 정확한 데이터를 확인할 수 있게 합니다.</small></span></button>
               <div class="lens-guide-rule__body">
                 <div class="lens-guide-specs">
                   <section><h3>대체 정보</h3><ul><li>차트 앞뒤에 핵심 결론을 문장으로 제공</li><li>정확한 값은 표 또는 다운로드 가능한 데이터로 제공</li><li>범례를 색상뿐 아니라 이름·무늬·선 모양으로 구분</li></ul></section>
@@ -588,10 +595,10 @@
   ...
 &lt;/svg&gt;</code></pre></div>
               </div>
-            </details>
+            </section>
 
-            <details class="lens-guide-rule" data-guide-category="interaction">
-              <summary><span><strong>무한 스크롤과 더보기</strong><small>새 콘텐츠가 추가된 사실과 위치를 알리고 끝까지 키보드로 접근할 수 있게 합니다.</small></span></summary>
+            <section class="lens-guide-rule" data-guide-category="interaction">
+              <button class="lens-guide-rule__trigger" type="button"><span><strong>무한 스크롤과 더보기</strong><small>새 콘텐츠가 추가된 사실과 위치를 알리고 끝까지 키보드로 접근할 수 있게 합니다.</small></span></button>
               <div class="lens-guide-rule__body">
                 <div class="lens-guide-specs">
                   <section><h3>권장 방식</h3><ul><li>자동 로드만 사용하지 말고 “더 보기” 버튼 제공</li><li>추가된 항목 수를 상태 메시지로 전달</li><li>버튼 포커스를 유지해 연속 조작 가능</li></ul></section>
@@ -600,8 +607,118 @@
                 <div class="lens-guide-code"><strong>구현 예시</strong><pre><code>&lt;ul id="result-list"&gt;...&lt;/ul&gt;
 &lt;button type="button" aria-controls="result-list"&gt;결과 더 보기&lt;/button&gt;
 &lt;p role="status"&gt;결과 20건이 추가되었습니다.&lt;/p&gt;</code></pre></div>
+                <p class="lens-guide-caution"><strong>대량 목록</strong> 가상화 목록은 화면에 없는 항목의 이름·위치를 잃지 않도록 전체 개수와 현재 위치를 전달합니다. 새 항목을 추가한 뒤 목록 전체를 재배치하거나 포커스를 빼앗지 말고, 로딩 실패에는 오류·재시도 버튼·마지막 성공 상태를 제공합니다.</p>
               </div>
-            </details>
+            </section>
+
+            <section class="lens-guide-rule" data-guide-category="form" id="guide-form-error-summary" data-guide-keywords="오류 요약 제출 포커스 aria-invalid aria-describedby aria-errormessage 서버 검증 클라이언트 검증">
+              <button class="lens-guide-rule__trigger" type="button"><span><strong>오류 요약과 제출 후 포커스</strong><small>제출 결과를 한곳에 요약하고 각 필드의 오류와 연결해 수정 흐름을 안내합니다.</small></span></button>
+              <div class="lens-guide-rule__body">
+                <section class="lens-guide-practice"><h3>언제 사용하는가</h3><p>폼 제출이 실패하거나 서버 검증에서 오류가 반환될 때 사용합니다. 필드가 많을수록 오류 요약과 개별 오류를 함께 제공해야 사용자가 빠르게 수정할 수 있습니다.</p></section>
+                <section class="lens-guide-practice"><h3>핵심 구현 기준</h3><p>요약의 각 항목은 해당 입력으로 이동하는 링크여야 합니다. 제출 후에는 오류 요약 또는 첫 번째 오류 필드 중 제품 흐름에 맞는 한 곳으로 포커스를 이동하고, 오류가 없어지면 정상 완료 상태를 알립니다.</p></section>
+                <div class="lens-guide-specs">
+                  <section><h3>연결 속성</h3><ul><li>오류 필드에 <code>aria-invalid="true"</code></li><li>도움말과 오류는 <code>aria-describedby</code>로 연결</li><li>오류 전용 문구는 <code>aria-errormessage</code>로 연결할 수 있음</li><li>요약 제목에 <code>tabindex="-1"</code> 또는 첫 오류 링크에 포커스</li></ul></section>
+                  <section><h3>검증 흐름</h3><ul><li>클라이언트 검증 오류도 서버 오류와 같은 구조로 표시</li><li>서버 응답 오류를 입력값 옆에 다시 연결</li><li>오류 수와 수정 방법을 요약에 명시</li><li>색상만으로 오류를 구분하지 않음</li></ul></section>
+                </div>
+                <div class="lens-guide-code"><strong>권장 예</strong><pre><code>&lt;div id="form-errors" role="alert" tabindex="-1"&gt;
+  &lt;h2&gt;입력 내용을 확인하세요&lt;/h2&gt;
+  &lt;ul&gt;&lt;li&gt;&lt;a href="#email"&gt;이메일을 확인하세요&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;
+&lt;/div&gt;
+&lt;label for="email"&gt;이메일&lt;/label&gt;
+&lt;input id="email" aria-invalid="true"
+  aria-describedby="email-help email-error"
+  aria-errormessage="email-error"&gt;
+&lt;p id="email-help"&gt;업무용 이메일을 입력하세요.&lt;/p&gt;
+&lt;p id="email-error"&gt;이메일 형식이 아닙니다.&lt;/p&gt;
+&lt;!-- 제출 실패 후 document.querySelector('#form-errors').focus() --&gt;</code></pre></div>
+                <p class="lens-guide-caution"><strong>잘못된 예</strong> 오류를 입력칸 아래에 색상만으로 표시하거나 요약만 제공해 어떤 값을 고쳐야 하는지 연결하지 않는 구현은 피합니다.</p>
+                <section class="lens-guide-checklist"><h3>검수 체크리스트</h3><ul><li>요약과 개별 오류가 링크와 id로 연결되는가?</li><li>제출 실패 후 포커스 위치가 예측 가능한가?</li><li><code>aria-invalid</code>가 오류가 있을 때만 설정되는가?</li><li>서버와 클라이언트 오류가 동일한 방식으로 읽히는가?</li></ul></section>
+              </div>
+            </section>
+
+            <section class="lens-guide-rule" data-guide-category="interaction" id="guide-focus-transition" data-guide-keywords="포커스 관리 동적 DOM 화면 전환 뷰 전환 focus restore inert sticky header SPA">
+              <button class="lens-guide-rule__trigger" type="button"><span><strong>포커스 관리와 동적 화면 전환</strong><small>콘텐츠가 바뀌어도 사용자가 현재 위치와 다음 작업을 잃지 않도록 포커스를 관리합니다.</small></span></button>
+              <div class="lens-guide-rule__body">
+                <section class="lens-guide-practice"><h3>언제 사용하는가</h3><p>동적 DOM 삽입, SPA의 뷰 전환, 탭·패널 교체, 항목 삭제처럼 화면이 다시 그려지는 모든 흐름에 적용합니다.</p></section>
+                <section class="lens-guide-practice"><h3>핵심 구현 기준</h3><p>새 화면의 제목이나 주요 콘텐츠 시작점으로 포커스를 옮기고, 삭제된 요소의 호출 버튼이 사라졌다면 가까운 다음 항목이나 부모 컨테이너로 복구합니다. 단순한 상태 갱신에는 포커스를 빼앗지 말고 상태 메시지를 사용합니다.</p></section>
+                <div class="lens-guide-specs">
+                  <section><h3>전환 정책</h3><ul><li>뷰 전환 후 새 <code>h1</code> 또는 콘텐츠 시작점에 <code>tabindex="-1"</code></li><li>탭 전환은 선택 탭에 포커스를 유지하고 패널은 필요할 때만 이동</li><li>동적 삽입 콘텐츠는 삽입 위치를 유지하고 자동 스크롤을 피함</li><li>삭제 후 이전·다음 항목 또는 목록 제목으로 포커스 복구</li></ul></section>
+                  <section><h3>레이아웃 주의</h3><ul><li>sticky/fixed header가 포커스 대상을 가리지 않게 <code>scroll-margin-block-start</code> 또는 여백 사용</li><li>모달 외부는 <code>inert</code>로 비활성화</li><li>DOM 순서와 시각적 순서를 일치</li><li>전환 완료를 <code>aria-live</code>로 중복 알리지 않음</li></ul></section>
+                </div>
+                <div class="lens-guide-code"><strong>권장 예</strong><pre><code>&lt;h1 id="view-title" tabindex="-1"&gt;검사 결과&lt;/h1&gt;
+&lt;main&gt;...&lt;/main&gt;
+&lt;script&gt;
+  // 뷰 교체가 끝난 뒤 한 번만 이동
+  document.getElementById('view-title').focus();
+&lt;/script&gt;</code></pre></div>
+                <p class="lens-guide-caution"><strong>잘못된 예</strong> 모든 DOM 변경마다 <code>body.focus()</code>를 호출하거나, 고정 헤더 아래로 포커스를 숨기는 구현은 현재 위치를 잃게 만듭니다.</p>
+                <section class="lens-guide-checklist"><h3>검수 체크리스트</h3><ul><li>전환·삽입·삭제 후 포커스 위치가 논리적인가?</li><li>삭제된 요소에서 포커스가 사라지지 않는가?</li><li>고정 헤더가 포커스 대상을 가리지 않는가?</li><li>키보드 사용자의 현재 작업이 갑자기 초기화되지 않는가?</li></ul></section>
+              </div>
+            </section>
+
+            <section class="lens-guide-rule" data-guide-category="content" id="guide-reflow" data-guide-keywords="확대 리플로우 200% 400% 텍스트 간격 양방향 스크롤 반응형 fixed sticky forced colors">
+              <button class="lens-guide-rule__trigger" type="button"><span><strong>확대·리플로우·반응형 레이아웃</strong><small>확대와 좁은 화면에서도 정보와 조작 기능이 잘리지 않도록 유연하게 배치합니다.</small></span></button>
+              <div class="lens-guide-rule__body">
+                <section class="lens-guide-practice"><h3>언제 사용하는가</h3><p>저시력 사용자가 브라우저 확대나 텍스트 간격을 조정하거나 모바일 화면에서 콘텐츠를 볼 때 적용합니다. 확대 상태를 별도 페이지로 분리하지 않습니다.</p></section>
+                <section class="lens-guide-practice"><h3>핵심 구현 기준</h3><p>200% 텍스트 확대와 400% 리플로우에서 핵심 콘텐츠와 기능을 유지하고, 일반 문서에서는 불필요한 양방향 스크롤을 만들지 않습니다.</p></section>
+                <div class="lens-guide-specs">
+                  <section><h3>확대·간격</h3><ul><li>텍스트를 <strong>200%</strong>까지 확대해도 잘림 없이 읽기</li><li><strong>400%</strong> 확대 또는 320 CSS px 폭에서 한 방향 스크롤 우선</li><li>줄·문단·글자·단어 간격 변경을 수용</li><li>고정 높이와 <code>overflow:hidden</code>으로 문장을 자르지 않음</li></ul></section>
+                  <section><h3>반응형</h3><ul><li>콘텐츠 순서와 의미를 viewport에 따라 바꾸지 않음</li><li>표·코드처럼 예외적인 영역은 내부 스크롤과 대체 설명 제공</li><li>fixed/sticky 요소가 콘텐츠나 포커스를 가리지 않게 함</li><li>모바일에서 숨긴 기능에 동일한 대체 조작 제공</li></ul></section>
+                </div>
+                <div class="lens-guide-code"><strong>권장 예</strong><pre><code>.content {
+  max-width: 70ch;
+  padding-inline: 1rem;
+  overflow-wrap: anywhere;
+}
+.anchor-target { scroll-margin-block-start: 5rem; }
+/* 고정 높이 대신 콘텐츠에 맞춰 확장 */</code></pre></div>
+                <p class="lens-guide-caution"><strong>잘못된 예</strong> 확대 시 텍스트가 겹치거나 가로·세로 스크롤을 동시에 요구하고, 모바일에서 정보나 버튼을 숨겨 버리는 레이아웃은 피합니다.</p>
+                <section class="lens-guide-checklist"><h3>검수 체크리스트</h3><ul><li>200%와 400% 확대에서 내용과 기능이 모두 보이는가?</li><li>320 CSS px 폭에서 양방향 스크롤이 생기지 않는가?</li><li>텍스트 간격 변경 후 잘림이 없는가?</li><li>fixed/sticky 요소가 본문과 포커스를 가리지 않는가?</li></ul></section>
+              </div>
+            </section>
+
+            <section class="lens-guide-rule" data-guide-category="interaction" id="guide-touch-pointer" data-guide-keywords="터치 대상 포인터 입력 touch pointer target size pointer cancellation 실수 입력 hover 모바일">
+              <button class="lens-guide-rule__trigger" type="button"><span><strong>터치 대상과 포인터 입력</strong><small>손가락·펜·마우스의 실수 입력을 줄이고 터치가 어려워도 같은 기능을 실행하게 합니다.</small></span></button>
+              <div class="lens-guide-rule__body">
+                <section class="lens-guide-practice"><h3>언제 사용하는가</h3><p>모바일 버튼, 아이콘 컨트롤, 드래그 영역과 포인터 제스처를 설계할 때 사용합니다. 터치만 가능한 기능은 키보드·버튼 대체 조작도 함께 제공합니다.</p></section>
+                <section class="lens-guide-practice"><h3>핵심 구현 기준</h3><p>WCAG 2.2의 Target Size (최소 24×24 CSS px, 상황에 따라 44×44 권장)와 충분한 간격을 고려하고, 포인터를 누른 뒤 취소할 수 있는 여지를 남깁니다.</p></section>
+                <div class="lens-guide-specs">
+                  <section><h3>포인터 원칙</h3><ul><li>인접한 터치 대상 사이에 충분한 간격 제공</li><li>누르기 시작한 뒤 포인터를 벗어나면 실행을 취소할 수 있게 함</li><li>click/keyboard 이벤트와 중복 실행되지 않게 처리</li><li>실수로 삭제·결제하지 않도록 확인 또는 실행 취소 제공</li></ul></section>
+                  <section><h3>대체 조작</h3><ul><li>drag/gesture 기능에 버튼·키보드 대안 제공</li><li>hover에만 의존하지 않고 focus와 touch에서도 정보 표시</li><li>긴 누르기·다중 손가락 동작을 단순한 조작으로 대체</li><li>작은 화면에서 컨트롤이 서로 겹치지 않게 배치</li></ul></section>
+                </div>
+                <div class="lens-guide-code"><strong>권장 예</strong><pre><code>&lt;button type="button" class="icon-button"
+  aria-label="필터 열기"&gt;...&lt;/button&gt;
+/* 최소 터치 영역은 시각 아이콘보다 크게 확보 */
+.icon-button { min-inline-size: 2.75rem; min-block-size: 2.75rem; }</code></pre></div>
+                <p class="lens-guide-caution"><strong>잘못된 예</strong> 12px 아이콘만 터치 대상으로 만들거나 hover에서만 열리는 메뉴, 움직임을 끝까지 완료해야만 취소할 수 있는 제스처는 피합니다.</p>
+                <section class="lens-guide-checklist"><h3>검수 체크리스트</h3><ul><li>터치 대상이 충분히 크고 서로 겹치지 않는가?</li><li>포인터 취소·실수 방지·실행 취소가 가능한가?</li><li>모든 제스처에 단순한 대체 조작이 있는가?</li><li>hover 없이도 동일한 정보와 기능을 사용할 수 있는가?</li></ul></section>
+              </div>
+            </section>
+
+            <section class="lens-guide-rule" data-guide-category="form" id="guide-auth-password" data-guide-keywords="인증 비밀번호 로그인 password OTP CAPTCHA 복사 붙여넣기 autocomplete accessible authentication">
+              <button class="lens-guide-rule__trigger" type="button"><span><strong>인증과 비밀번호 입력</strong><small>로그인·OTP·비밀번호 관리 흐름을 보조기기와 비밀번호 관리자에서도 완료할 수 있게 합니다.</small></span></button>
+              <div class="lens-guide-rule__body">
+                <section class="lens-guide-practice"><h3>언제 사용하는가</h3><p>로그인, 회원가입, 비밀번호 변경, 다중 인증과 CAPTCHA가 포함된 인증 화면에 적용합니다. 보안 목적이라도 키보드와 보조기기의 일반 입력 동작을 막지 않습니다.</p></section>
+                <section class="lens-guide-practice"><h3>핵심 구현 기준</h3><p>입력 목적을 올바른 <code>autocomplete</code> 토큰으로 선언하고, 비밀번호 표시·숨김과 오류 상태를 이름·상태·도움말로 전달합니다. Accessible Authentication 원칙에 따라 기억·전사 부담을 줄이는 대체 수단을 제공합니다.</p></section>
+                <div class="lens-guide-specs">
+                  <section><h3>입력과 관리자</h3><ul><li>아이디는 <code>autocomplete="username"</code>, 새 비밀번호는 <code>new-password</code></li><li>현재 비밀번호는 <code>current-password</code></li><li>복사·붙여넣기와 비밀번호 관리자의 입력을 막지 않음</li><li>표시/숨김 버튼은 상태와 목적을 함께 제공</li></ul></section>
+                  <section><h3>인증 대안</h3><ul><li>OTP 칸은 한 칸 입력과 여러 칸 입력 모두 붙여넣기 지원</li><li>OTP 만료·재전송·오류를 상태 메시지로 안내</li><li>CAPTCHA에는 음성·대체 인증 등 동등한 수단 제공</li><li>비밀번호만을 기억하도록 강제하지 않는 인증 방법 고려</li></ul></section>
+                </div>
+                <div class="lens-guide-code"><strong>권장 예</strong><pre><code>&lt;label for="password"&gt;비밀번호&lt;/label&gt;
+&lt;div&gt;
+  &lt;input id="password" type="password"
+    autocomplete="current-password"&gt;
+  &lt;button type="button" aria-pressed="false"
+    aria-controls="password"&gt;비밀번호 표시&lt;/button&gt;
+&lt;/div&gt;
+&lt;label for="otp"&gt;인증 코드&lt;/label&gt;
+&lt;input id="otp" inputmode="numeric" autocomplete="one-time-code"
+  aria-describedby="otp-help"&gt;
+&lt;p id="otp-help"&gt;문자로 받은 6자리 코드를 입력하세요.&lt;/p&gt;</code></pre></div>
+                <p class="lens-guide-caution"><strong>잘못된 예</strong> 보안을 이유로 붙여넣기·자동완성을 막거나, CAPTCHA만 제공해 다른 인증 수단을 주지 않는 구현은 피합니다.</p>
+                <section class="lens-guide-checklist"><h3>검수 체크리스트</h3><ul><li>로그인·비밀번호 입력 목적에 맞는 <code>autocomplete</code>가 있는가?</li><li>표시/숨김, 오류, OTP 재전송 상태가 전달되는가?</li><li>붙여넣기와 비밀번호 관리자가 동작하는가?</li><li>CAPTCHA 또는 기억 부담에 대한 동등한 대안이 있는가?</li></ul></section>
+              </div>
+            </section>
           </div>
 
           <div class="lens-guide-empty" data-guide-empty hidden>
@@ -617,6 +734,6 @@
   <div class="a11y-toast-root" aria-live="polite" aria-atomic="true" data-a11y-toast-root></div>
   <script type="module" src="./assets/js/common/include.js?v=20260806-1"></script>
   <script type="module" src="./assets/js/common/navigation.js?v=20260806-1"></script>
-  <script type="module" src="./assets/js/guide.js?v=20260806-12"></script>
+  <script type="module" src="./assets/js/guide.js?v=20260806-14"></script>
 </body>
 </html>

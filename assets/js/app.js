@@ -9,7 +9,16 @@ let inspectorCloseTimer = 0;
 let currentViewportMode = "pc";
 let historyItems = [];
 
+await waitForIncludes();
 init();
+
+function waitForIncludes() {
+  if (!document.querySelector("[data-include]")) return Promise.resolve();
+  if (document.documentElement.classList.contains("is-include-ready")) return Promise.resolve();
+  return new Promise((resolve) => {
+    document.addEventListener("a11y:includes-ready", resolve, { once: true });
+  });
+}
 
 function init() {
   const root = document.querySelector("[data-a11y-app]");
@@ -45,7 +54,7 @@ function init() {
 }
 
 function bindEvents() {
-  elements.brandHome.addEventListener("click", navigateHome);
+  elements.brandHome?.addEventListener("click", navigateHome);
   elements.form.addEventListener("submit", (event) => {
     event.preventDefault();
     openPage();
@@ -67,9 +76,10 @@ function bindEvents() {
   elements.closeButton.addEventListener("click", closeInspector);
 }
 
-function navigateHome() {
+function navigateHome(event) {
   const target = document.querySelector("#a11y-scan");
   if (!target) return;
+  event?.preventDefault();
   target.scrollIntoView({ behavior: "smooth", block: "start" });
   window.setTimeout(() => elements.urlInput.focus({ preventScroll: true }), 420);
 }
